@@ -42,7 +42,7 @@ const Navbar = props => {
 
     const renderNavInfo = () => {
         if (props.isSignedIn) {
-            return <li className="nav-item disabled"><a className="nav-link disabled">Logged in as {props.name}</a></li>
+            return <li className="nav-item disabled"><a className="nav-link disabled">Logged in as {props.email}</a></li>
         }
     }
 
@@ -81,7 +81,8 @@ const Navbar = props => {
 const mapStateToProps = state => {
     return { 
         isSignedIn: state.auth.isSignedIn,
-        name: state.auth.user.name 
+        name: state.auth.user.name,
+        email: state.auth.user.email
     };
 }
 

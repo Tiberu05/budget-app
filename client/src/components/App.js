@@ -11,6 +11,7 @@ import './App.css';
 import HomePage from './HomePage';
 import Navbar from './Navbar';
 import CreateBudgetLog from './CreateBudgetLog';
+import Statistics from './Statistics';
 import CreateUser from './CreateUser';
 import EditLog from './EditLog';
 import BudgetLogs from './BudgetLogs';
@@ -41,6 +42,7 @@ const App = props => {
                         <Route path='/logs' exact component={BudgetLogs} />
                         <Route path='/logs/edit/:id' exact component={EditLog} />
                         <Route path='/create' exact component={CreateBudgetLog} />
+                        <Route path='/statistics' exact component={Statistics} />
                         <Route path='/register' exact component={CreateUser} />
                         <Route path='/login' exact component={LoginForm} />
                     </Switch>

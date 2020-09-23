@@ -36,7 +36,7 @@ const LoginForm = props => {
 
         props.logIn(email, password);
 
-
+        window.location = '/';
     }
 
     return (

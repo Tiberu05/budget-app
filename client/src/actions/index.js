@@ -82,10 +82,9 @@ export const logIn = (email, password) => dispatch => {
         password
     };
 
-    axios.post('http://localhost:5000/users/login', config)
+    axios.post('http://localhost:5000/users/login', config, { header: { "Content-Type": 'application/json'}})
         .then(res => {
             clearErrors();
-            history.push('/');
             dispatch({
                 type: 'LOGIN_SUCCES',
                 payload: res.data
