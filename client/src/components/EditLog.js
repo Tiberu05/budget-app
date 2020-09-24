@@ -63,10 +63,17 @@ const EditLog = props => {
                     <input className='form-control' type='text' name='username' autoComplete='off' value={username} onChange={e => setUsername(e.target.value)} />
                 </div> */}
 
-                <div className='form-group'>
+                {/* <div className='form-group'>
                     <select onChange={e => setLog({ ...log, type: e.target.value})} value={log.type}>
                         <option value='income'>Income</option>
                         <option value='expense'>Expense</option>
+                    </select>
+                </div> */}
+
+                <div className="form-group">
+                    <select className="custom-select mr-sm-2" id="inlineFormCustomSelect" onChange={e => setLog( {...log, type: e.target.value} )} value={log.type}>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
                     </select>
                 </div>
 

@@ -82,7 +82,7 @@ export const logIn = (email, password) => dispatch => {
         password
     };
 
-    axios.post('http://localhost:5000/users/login', config, { header: { "Content-Type": 'application/json'}})
+    axios.post('http://localhost:5000/users/login', config, { header: { "Content-Type": "application/json" }})
         .then(res => {
             clearErrors();
             dispatch({
