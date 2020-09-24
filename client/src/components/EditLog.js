@@ -25,7 +25,8 @@ const EditLog = props => {
 
     useEffect(() => {
         console.log(log);
-    })
+        console.log(date);
+    }, [log, date])
 
 
 
@@ -91,8 +92,8 @@ const EditLog = props => {
                     <label for='date'>Choose date:  </label>
                     <DatePicker
                         className='form-control date-input'
-                        onChange={e => setLog({ ...log, date: e.target.value })}
-                        selected={date}
+                        onChange={newDate => setLog({ ...log, date: newDate })}
+                        selected={Date.parse(log.date)}
                         name='date'
                     />
                 </div>

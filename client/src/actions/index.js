@@ -11,8 +11,9 @@ export const getData = email => dispatch => {
         .catch(err => console.log(err))
 }
 
-
+//
 // ERROR actions
+//
 
 export const returnErrors = (msg, status, id = null) => {
     return {
@@ -102,21 +103,6 @@ export const logOut = () => dispatch => {
     dispatch({ type: 'LOGOUT_SUCCES' });
 }
 
-// export const signIn = (userID, username) => {
-//     return {
-//         type: 'SIGN_IN',
-//         payload: {
-//             userID,
-//             username
-//         }
-//     }
-// };
-
-// export const signOut = () => {
-//     return {
-//         type: 'SIGN_OUT'
-//     }
-// };
 
 
 export const tokenConfig = getState => {
@@ -136,4 +122,36 @@ export const tokenConfig = getState => {
         }
 
         return config;
+}
+
+
+
+// FILTER ACTIONS
+
+export const filterByDate = () => {
+    return {
+        type: "FILTER_DATE"
+    }
+};
+
+export const filterByType = (filtertype) => {
+    if (filtertype === 'incomes') {
+        return {
+            type: "FILTER_TYPE_INCOMES"
+        }
+    } else if (filtertype === 'expenses') {
+        return {
+            type: "FILTER_TYPE_EXPENSES"
+        }
+    } else {
+        return {
+            type: "NO_FILTERS"
+        }
+    }
+}
+
+const noFilters = () => {
+    return {
+        type: "NO_FILTERS"
+    }
 }

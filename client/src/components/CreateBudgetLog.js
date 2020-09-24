@@ -20,6 +20,10 @@ const CreateBudgetLog = props => {
     const [sum, setSum] = useState(0);
     const [users, setUsers] = useState([]);
 
+    useEffect(() => {
+        console.log(date);
+    }, [date])
+
 
     const onSubmit = e => {
 

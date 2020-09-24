@@ -4,7 +4,12 @@ import { connect } from 'react-redux';
 
 import axios from 'axios';
 
-import { getData } from '../actions';
+import { 
+    getData,
+    filterByDate,
+    filterByType,
+    noFilters
+} from '../actions';
 
 import history from '../history';
 import { post } from 'jquery';
@@ -17,16 +22,16 @@ const BudgetLogs = props => {
     // const [incomes, setIncomes] = useState([]);
     // const [expenses, setExpenses] = useState([]);
     const [logs, setLogs] = useState([]);
-    const {rell, setRell} = useState('');
+
+    const [total, setTotal] = useState(0);
 
 
 
-
-    useEffect(() => {
-        setLogs(props.logs);
+    // useEffect(() => {
+    //     setLogs(props.logs);
 
         
-    }, [logs])
+    // }, [logs])
 
     // useEffect(() => {
     //     console.log(logs);
@@ -102,22 +107,84 @@ const BudgetLogs = props => {
 
         if (props.logs.length > 0) {
 
-            const render = props.logs.sort((a, b) => new Date(b.date) - new Date(a.date)).map(el => {
+            if (!props.filters.byType.incomes && !props.filters.byType.expenses) {
 
-                const classToggle = el.type === 'expense' ? 'expense' : 'income';
-                return (
-                    <tr className={`${classToggle}`} key={el._id}>
-                        <td>{el.date.substring(0, 10)}</td>
-                        <td>{el.type}</td>
-                        <td>{el.description.slice(0, 1).toUpperCase() + el.description.slice(1, el.description.length).toLowerCase()}</td>
-                        <td>{el.sum}</td>
-                        {renderButtons(el)}
+                let totalFiltered = 0;
 
-                    </tr>
-                )
-            })
+                const render = props.logs.sort((a, b) => new Date(b.date) - new Date(a.date)).map(el => {
 
-            return render;
+                    totalFiltered += el.sum;
+
+                    const classToggle = el.type === 'expense' ? 'expense' : 'income';
+                    return (
+                        <tr className={`${classToggle}`} key={el._id}>
+                            <td>{el.date.substring(0, 10)}</td>
+                            <td>{el.type}</td>
+                            <td>{el.description.slice(0, 1).toUpperCase() + el.description.slice(1, el.description.length).toLowerCase()}</td>
+                            <td>{el.sum}</td>
+                            {renderButtons(el)}
+                        </tr>
+                    )
+                });
+
+                setTotal(totalFiltered);
+
+
+                return render;
+
+            } else if (props.filters.byType.incomes && !props.filters.byType.expenses) {
+
+                let totalFiltered = 0;
+
+                const filteredArray = props.logs.filter(el => el.type !== 'expense');
+
+                const render = filteredArray.sort((a, b) => new Date(b.date) - new Date(a.date)).map(el => {
+
+                    totalFiltered += el.sum;
+
+                    const classToggle = el.type === 'expense' ? 'expense' : 'income';
+                    return (
+                        <tr className={`${classToggle}`} key={el._id}>
+                            <td>{el.date.substring(0, 10)}</td>
+                            <td>{el.type}</td>
+                            <td>{el.description.slice(0, 1).toUpperCase() + el.description.slice(1, el.description.length).toLowerCase()}</td>
+                            <td>{el.sum}</td>
+                            {renderButtons(el)}
+
+                        </tr>
+                    )
+                })
+
+                return render;
+
+            } else if (!props.filters.byType.incomes && props.filters.byType.expenses) {
+
+                let totalFiltered = 0;
+
+                const filteredArray = props.logs.filter(el => el.type !== 'income');
+
+                const render = filteredArray.sort((a, b) => new Date(b.date) - new Date(a.date)).map(el => {
+
+                    totalFiltered += el.sum;
+
+                    const classToggle = el.type === 'expense' ? 'expense' : 'income';
+                    return (
+                        <tr className={`${classToggle}`} key={el._id}>
+                            <td>{el.date.substring(0, 10)}</td>
+                            <td>{el.type}</td>
+                            <td>{el.description.slice(0, 1).toUpperCase() + el.description.slice(1, el.description.length).toLowerCase()}</td>
+                            <td>{el.sum}</td>
+                            {renderButtons(el)}
+
+                        </tr>
+                    )
+                });
+
+                console.log(totalFiltered);
+
+                return render;
+            }
+
         } else {
             return null;
         }
@@ -166,12 +233,27 @@ const BudgetLogs = props => {
         }
     }
 
-
+    const changeFilters = (value) => {
+        props.filterByType(value);
+    }
 
 
     return (
         // <div className='exercises-container'>{renderExercises()}</div>
         <div className='exercises-list'>
+
+            <div className='filters-area'>
+                <div className="form-group">
+                    <label for='mr-sm-2'>Show</label>
+                    <select className="custom-select mr-sm-2" id="inlineFormCustomSelect" onChange={e => changeFilters(e.target.value)}>
+                        <option value="0">All</option>
+                        <option value="incomes">Only Incomes</option>
+                        <option value="expenses">Only Expenses</option>
+                    </select>
+                </div>
+            </div>
+
+
             <h2>Your Budget Logs</h2>
             <table className='table'>
                 <thead className='table-active'>
@@ -201,8 +283,9 @@ const mapStateToProps = (state, ownProps) => {
         userID: state.auth.user._id, 
         token: state.auth.token,
         logs: state.userData.logs,
-        budget: state.userData.budget
+        budget: state.userData.budget,
+        filters: state.filters
     };
 }
 
-export default connect(mapStateToProps, { getData } )(BudgetLogs);
+export default connect(mapStateToProps, { getData, filterByType } )(BudgetLogs);
