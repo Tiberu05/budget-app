@@ -127,9 +127,6 @@ const BudgetLogs = props => {
                     )
                 });
 
-                setTotal(totalFiltered);
-
-
                 return render;
 
             } else if (props.filters.byType.incomes && !props.filters.byType.expenses) {
