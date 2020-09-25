@@ -1,49 +1,29 @@
 const INITIAL_STATE = {
-    byDate: false,
-    byType: {
-        incomes: false,
-        expenses: false
-    }
+    date: '',
+    type: ''
 }
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case "FILTER_DATE":
             return {
-                byDate: true,
-                byType: false
+                ...state,
+                date: action.payload
             };
-        case "FILTER_TYPE_INCOMES":
+        case "FILTER_TYPE":
             return {
-                byDate: false,
-                byType: {
-                    incomes: true,
-                    expenses: false
-                }
-            };
-        case "FILTER_TYPE_EXPENSES":
-            return {
-                byDate: false,
-                byType: {
-                    incomes: false,
-                    expenses: true
-                }
+                ...state,
+                type: action.payload
             };
         case "NO_FILTERS":
             return {
-                byDate: false,
-                byType: {
-                    incomes: false,
-                    expenses: false
-                }
+                date: '',
+                type: ''
             }
         default:
             return {
-                byDate: false,
-                byType: {
-                    incomes: false,
-                    expenses: false
-                }
+                date: '',
+                type: ''
             }
     }
 };

@@ -49,8 +49,49 @@ const getTotals = array => {
 
 
 router.get('/:email', (req, res) => {
-    const email = req.params.email;
-    Log.find({ email })
+
+    //const email = req.params.email;
+
+    const {type, date} = req.query;
+
+    let newDate;
+
+    let year;
+    let month;
+    let day;
+    let nextDay;
+
+    let query = {};
+
+    query.email = req.params.email;
+
+    if (type) {
+        query.type = type;
+    }
+
+    if (date) {
+        newDate = new Date(date);
+
+        year = newDate.getFullYear();
+        month = newDate.getMonth();
+        day = newDate.getDate();
+        nextDay = day + 1;
+        query.date = { $gte: new Date(year, month, day), $lt: new Date(year, month, nextDay) };
+    }
+
+    console.log(query);
+    
+    // Log.find({ email })
+    //     .then(logs => {
+            
+    //         const { totalIncome, totalExpense, budget } = getTotals(logs);
+
+    //         res.json({ totalIncome, totalExpense, budget, logs });
+    //     })
+    //     .catch(err => res.status(400).json({ msg: 'Error'}))
+
+    
+    Log.find( query )
         .then(logs => {
             
             const { totalIncome, totalExpense, budget } = getTotals(logs);
@@ -60,10 +101,18 @@ router.get('/:email', (req, res) => {
         .catch(err => res.status(400).json({ msg: 'Error'}))
 });
 
+router.get('/find', (req, res) => {
+    const { type, date } = req.query;
+    res.json(type);
+})
 
-router.get(`/find/:id`, (req, res) => {
+
+router.get(`/find/log/:id`, (req, res) => {
     Log.findById(req.params.id)
-        .then(log => res.json({log}))
+        .then(log => {
+            console.log(typeof log.date);
+            res.json({log})
+        })
         .catch(err => res.status(400).json({ msg: "This log could not be found"}))
 })
 

@@ -47,7 +47,6 @@ const CreateBudgetLog = props => {
             })
             .catch(err => console.log(err));
 
-
     }
 
     return (

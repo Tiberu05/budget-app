@@ -15,7 +15,7 @@ const EditLog = props => {
 
     useEffect(() => {
         console.log(props.match.params.id);
-        axios.get(`http://localhost:5000/logs/find/${props.match.params.id}`)
+        axios.get(`http://localhost:5000/logs/find/log/${props.match.params.id}`)
             .then(result => {
                 setLog(result.data.log);  
             })

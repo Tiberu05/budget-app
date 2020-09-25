@@ -2,8 +2,17 @@ import axios from 'axios';
 import history from '../history';
 
 
-export const getData = email => dispatch => {
-    axios.get(`http://localhost:5000/logs/${email}`)
+// export const getData = email => dispatch => {
+//     axios.get(`http://localhost:5000/logs/${email}`)
+//         .then(res => dispatch({
+//             type: "GET_DATA",
+//             payload: res.data,
+//         }))
+//         .catch(err => console.log(err))
+// }
+
+export const getData = (email, type='', date='') => dispatch => {
+    axios.get(`http://localhost:5000/logs/${email}?type=${type}&date=${date}`)
         .then(res => dispatch({
             type: "GET_DATA",
             payload: res.data,
@@ -49,7 +58,7 @@ export const loadUser = () => (dispatch, getState) => {
         }))
         .catch(err => {
             console.log(err);
-            dispatch(returnErrors(err.response.data, err.response.status));
+            //dispatch(returnErrors(err.response.data, err.response.status));
             dispatch({ type: 'AUTH_ERROR'})
         })
 }
@@ -128,30 +137,20 @@ export const tokenConfig = getState => {
 
 // FILTER ACTIONS
 
-export const filterByDate = () => {
+export const filterByDate = (date) => {
     return {
-        type: "FILTER_DATE"
+        type: "FILTER_DATE",
+        payload: date
     }
 };
 
 export const filterByType = (filtertype) => {
-    if (filtertype === 'incomes') {
-        return {
-            type: "FILTER_TYPE_INCOMES"
-        }
-    } else if (filtertype === 'expenses') {
-        return {
-            type: "FILTER_TYPE_EXPENSES"
-        }
-    } else {
-        return {
-            type: "NO_FILTERS"
-        }
+    return {
+        type: "FILTER_TYPE",
+        payload: filtertype
     }
-}
+};
 
 const noFilters = () => {
-    return {
-        type: "NO_FILTERS"
-    }
+    return { type: "NO_FILTERS"};
 }

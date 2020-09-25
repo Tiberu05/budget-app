@@ -12,6 +12,11 @@
     
 }
 
+.container-main {
+    min-height: 100vh;
+    margin-bottom: 15px;
+}
+
 
 
 body {
@@ -109,6 +114,16 @@ body {
     margin: 1em;
 }
 
+.table-info {
+    display: flex;
+    justify-content: flex-start;
+    background-color: inherit;
+}
+
+.table-info > div {
+    margin: 5px;
+}
+
 Link {
     text-transform: none;
 }
@@ -142,3 +157,13 @@ Link {
     outline: none;
 }
 
+
+.footer {
+    position: relative;
+    height: 100px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(52,58,64);
+}

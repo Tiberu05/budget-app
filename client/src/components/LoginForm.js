@@ -36,7 +36,11 @@ const LoginForm = props => {
 
         props.logIn(email, password);
 
-        window.location = '/';
+        setTimeout(() => {
+            window.location = '/';
+        }, 500)
+
+
     }
 
     return (

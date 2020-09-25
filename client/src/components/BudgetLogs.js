@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import axios from 'axios';
+import DatePicker from 'react-datepicker';
 
 import { 
     getData,
@@ -19,19 +20,40 @@ const BudgetLogs = props => {
 
     const [user, setUser] = useState({});
     const [email, setEmail] = useState('');
-    // const [incomes, setIncomes] = useState([]);
-    // const [expenses, setExpenses] = useState([]);
+    const [type, setType] = useState('');
+    //const [date, setDate] = useState('');
     const [logs, setLogs] = useState([]);
-
+    const [fType, setFtype] = useState('');
+    const [fDate, setFdate] = useState('');
     const [total, setTotal] = useState(0);
 
+    const [userData, setUserData] = useState({});
 
 
-    // useEffect(() => {
-    //     setLogs(props.logs);
+    useEffect(() => {
 
+        // const get = async () => {
+
+        //     const result = await axios.get(`http://localhost:5000/logs/${props.email}?type=${fType}&date=${fDate}`);
+
+        //     return result;
+        // }
+
+        // get()
+        //     .then(result => console.log(result))
+        //     .catch(err => console.log(err))
+
+
+        props.getData(props.email, fType, fDate);
+
+
+        return () => {
+            props.getData(props.email);
+        }
         
-    // }, [logs])
+    }, [fType, fDate, props.mail])
+
+
 
     // useEffect(() => {
     //     console.log(logs);
@@ -107,82 +129,24 @@ const BudgetLogs = props => {
 
         if (props.logs.length > 0) {
 
-            if (!props.filters.byType.incomes && !props.filters.byType.expenses) {
+            const render = props.logs.sort((a, b) => new Date(b.date) - new Date(a.date)).map(el => {
 
-                let totalFiltered = 0;
+                const classToggle = el.type === 'expense' ? 'expense' : 'income';
+                return (
+                    <tr className={`${classToggle}`} key={el._id}>
+                        <td>{el.date.substring(0, 10)}</td>
+                        <td>{el.type}</td>
+                        <td>{el.description.slice(0, 1).toUpperCase() + el.description.slice(1, el.description.length).toLowerCase()}</td>
+                        <td>{el.sum}</td>
+                        {renderButtons(el)}
+                    </tr>
+                )
+            });
 
-                const render = props.logs.sort((a, b) => new Date(b.date) - new Date(a.date)).map(el => {
-
-                    totalFiltered += el.sum;
-
-                    const classToggle = el.type === 'expense' ? 'expense' : 'income';
-                    return (
-                        <tr className={`${classToggle}`} key={el._id}>
-                            <td>{el.date.substring(0, 10)}</td>
-                            <td>{el.type}</td>
-                            <td>{el.description.slice(0, 1).toUpperCase() + el.description.slice(1, el.description.length).toLowerCase()}</td>
-                            <td>{el.sum}</td>
-                            {renderButtons(el)}
-                        </tr>
-                    )
-                });
-
-                return render;
-
-            } else if (props.filters.byType.incomes && !props.filters.byType.expenses) {
-
-                let totalFiltered = 0;
-
-                const filteredArray = props.logs.filter(el => el.type !== 'expense');
-
-                const render = filteredArray.sort((a, b) => new Date(b.date) - new Date(a.date)).map(el => {
-
-                    totalFiltered += el.sum;
-
-                    const classToggle = el.type === 'expense' ? 'expense' : 'income';
-                    return (
-                        <tr className={`${classToggle}`} key={el._id}>
-                            <td>{el.date.substring(0, 10)}</td>
-                            <td>{el.type}</td>
-                            <td>{el.description.slice(0, 1).toUpperCase() + el.description.slice(1, el.description.length).toLowerCase()}</td>
-                            <td>{el.sum}</td>
-                            {renderButtons(el)}
-
-                        </tr>
-                    )
-                })
-
-                return render;
-
-            } else if (!props.filters.byType.incomes && props.filters.byType.expenses) {
-
-                let totalFiltered = 0;
-
-                const filteredArray = props.logs.filter(el => el.type !== 'income');
-
-                const render = filteredArray.sort((a, b) => new Date(b.date) - new Date(a.date)).map(el => {
-
-                    totalFiltered += el.sum;
-
-                    const classToggle = el.type === 'expense' ? 'expense' : 'income';
-                    return (
-                        <tr className={`${classToggle}`} key={el._id}>
-                            <td>{el.date.substring(0, 10)}</td>
-                            <td>{el.type}</td>
-                            <td>{el.description.slice(0, 1).toUpperCase() + el.description.slice(1, el.description.length).toLowerCase()}</td>
-                            <td>{el.sum}</td>
-                            {renderButtons(el)}
-
-                        </tr>
-                    )
-                });
-
-                console.log(totalFiltered);
-
-                return render;
-            }
+            return render;      
 
         } else {
+
             return null;
         }
         
@@ -207,6 +171,7 @@ const BudgetLogs = props => {
     const renderCreateButton = () => {
         if (props.isSignedIn) {
             return (
+
                 <Link to='/create'>
                     <button className='btn btn-secondary'>Add new budget log</button>
                 </Link>
@@ -231,7 +196,39 @@ const BudgetLogs = props => {
     }
 
     const changeFilters = (value) => {
-        props.filterByType(value);
+        //props.filterByType(value);
+
+        setFtype(value);
+
+        //props.getData(props.email, value);
+    }
+
+    const renderFiltersArea = () => {
+
+        if (props.isSignedIn) {
+            return (
+                <div className='filters-area'>
+                    <div className="form-group">
+                        <label htmlFor='mr-sm-2'>Show</label>
+                        <select className="custom-select mr-sm-2" id="inlineFormCustomSelect" onChange={e => changeFilters(e.target.value)}>
+                            <option value="">All</option>
+                            <option value="income">Only Incomes</option>
+                            <option value="expense">Only Expenses</option>
+                        </select>
+                    </div>
+                    <div className='form-group'>
+                        <label for='date'>Choose date:  </label>
+                        <DatePicker
+                            className='form-control date-input'
+                            onChange={newDate => newDate !== null ? setFdate(newDate) : setFdate('')}
+                            selected={fDate}
+                            name='date'
+                            autoComplete='off'
+                        />
+                    </div>
+                </div>
+            )
+        }
     }
 
 
@@ -239,19 +236,17 @@ const BudgetLogs = props => {
         // <div className='exercises-container'>{renderExercises()}</div>
         <div className='exercises-list'>
 
-            <div className='filters-area'>
-                <div className="form-group">
-                    <label for='mr-sm-2'>Show</label>
-                    <select className="custom-select mr-sm-2" id="inlineFormCustomSelect" onChange={e => changeFilters(e.target.value)}>
-                        <option value="0">All</option>
-                        <option value="incomes">Only Incomes</option>
-                        <option value="expenses">Only Expenses</option>
-                    </select>
+            {renderFiltersArea()}
+
+            <div className='table-info'>
+                <div>
+                    <h2>Your Budget Logs</h2>
                 </div>
+                <div>
+                    {renderCreateButton()} 
+                </div>
+     
             </div>
-
-
-            <h2>Your Budget Logs</h2>
             <table className='table'>
                 <thead className='table-active'>
                     <tr>
@@ -268,12 +263,11 @@ const BudgetLogs = props => {
                 </tbody>
             </table>
             {renderText()}
-            {renderCreateButton()}
         </div>
     )
 };
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     return { 
         isSignedIn: state.auth.isSignedIn, 
         email: state.auth.user.email,
@@ -281,7 +275,7 @@ const mapStateToProps = (state, ownProps) => {
         token: state.auth.token,
         logs: state.userData.logs,
         budget: state.userData.budget,
-        filters: state.filters
+        filters: state.filters,
     };
 }
 
