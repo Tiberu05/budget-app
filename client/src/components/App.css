@@ -17,6 +17,10 @@
     margin-bottom: 15px;
 }
 
+.filters-area {
+    display: flex;
+}
+
 
 
 body {
@@ -166,4 +170,16 @@ Link {
     justify-content: center;
     align-items: center;
     background-color: rgb(52,58,64);
+}
+
+.react-datepicker-wrapper {
+    font-size: 10px;
+}
+    
+.react-datepicker-wrapper > .react-datepicker__input-container {
+      text-align: center;
+      border: none;
+      display: none;
+      background-color: inherit;
+      border-bottom: 2px solid #E3B924;
 }

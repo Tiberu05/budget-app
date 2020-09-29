@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
+import FiltersArea from './FiltersArea';
 
 import { 
     getData,
@@ -18,64 +21,32 @@ import { post } from 'jquery';
 
 const BudgetLogs = props => {
 
-    const [user, setUser] = useState({});
-    const [email, setEmail] = useState('');
-    const [type, setType] = useState('');
-    //const [date, setDate] = useState('');
-    const [logs, setLogs] = useState([]);
-    const [fType, setFtype] = useState('');
-    const [fDate, setFdate] = useState('');
-    const [total, setTotal] = useState(0);
 
-    const [userData, setUserData] = useState({});
+    const [state, setState] = useState({
+        filtersShow: true,
+        filterType: '',
+        filterMonth: '',
+        filterDate: ''
+    });
+
 
 
     useEffect(() => {
 
-        // const get = async () => {
 
-        //     const result = await axios.get(`http://localhost:5000/logs/${props.email}?type=${fType}&date=${fDate}`);
-
-        //     return result;
-        // }
-
-        // get()
-        //     .then(result => console.log(result))
-        //     .catch(err => console.log(err))
-
-
-        props.getData(props.email, fType, fDate);
+        props.getData(props.email, state.filterType, state.filterDate, state.filterMonth);
 
 
         return () => {
             props.getData(props.email);
         }
         
-    }, [fType, fDate, props.mail])
+    }, [state]);
 
+    useEffect(() => {
+        console.log(state);
+    })
 
-
-    // useEffect(() => {
-    //     console.log(logs);
-    // })
-
-    // useEffect(() => {
-
-    //     axios.get(`http://localhost:5000/users/user`, tokenConfig())
-    //     .then(results => {
-    //         setIncomes(results.data.data.incomes);
-    //         setExpenses(results.data.data.expenses);
-    //         setLogs(incomes.concat(expenses));
-    //         logs.sort((a, b) => (a.sum > b.sum ? -1 : 1));
-    //     })
-    //     .catch(err => console.log(err));
-
-        
-    // }, [logs]);
-
-    // useEffect(() => [
-    //     setLogs(props.incomes.concat(props.expenses))
-    // ], [])
 
 
     const deleteExercise = (id) => {
@@ -83,7 +54,7 @@ const BudgetLogs = props => {
             .then(result => {
                 console.log(result.data);
 
-                props.getData(props.email);
+                props.getData(props.email, state.filterType, state.filterDate, state.filterMonth);
             })
             .catch(err => console.log(err));
 
@@ -94,7 +65,7 @@ const BudgetLogs = props => {
             return (
                 <td>
                     <Link to={`logs/edit/${log._id}`}>
-                        <button className='btn btn-outline-primary btn-sm' href={`logs/edit/${log._id}`}>Edit</button>
+                        <button className='btn btn-outline-secondary btn-sm' href={`logs/edit/${log._id}`}>Edit</button>
                     </Link>
                     <button className='btn btn-outline-danger btn-sm' onClick={() => deleteExercise(log._id)}>Delete</button>
                 </td>
@@ -112,15 +83,6 @@ const BudgetLogs = props => {
         axios.post(`http://localhost:5000/exercises/update/${el._id}`, { ...el, checked: toggleBetween }, { headers: {'x-auth-token': localStorage.getItem('token')}})
             .then(result => console.log(result))
             .catch(err => console.log(err))
-    }
-
-
-    const renderChecked = el => {
-        if (!el.checked) {
-            return <i onClick={() => toggleChecked(el)} className="thumbs up outline icon"></i>
-        } else {
-            return <i onClick={() => toggleChecked(el)} className="thumbs up icon green"></i>
-        }
     }
 
 
@@ -195,39 +157,74 @@ const BudgetLogs = props => {
         }
     }
 
-    const changeFilters = (value) => {
-        //props.filterByType(value);
-
-        setFtype(value);
-
-        //props.getData(props.email, value);
+    const toggleFilters = () => {
+        state.filtersShow === true ? setState({...state, filtersShow: false}) : setState({...state, filtersShow: true});
     }
 
-    const renderFiltersArea = () => {
+    const renderFiltersButton = () => {
 
         if (props.isSignedIn) {
             return (
-                <div className='filters-area'>
-                    <div className="form-group">
-                        <label htmlFor='mr-sm-2'>Show</label>
-                        <select className="custom-select mr-sm-2" id="inlineFormCustomSelect" onChange={e => changeFilters(e.target.value)}>
-                            <option value="">All</option>
-                            <option value="income">Only Incomes</option>
-                            <option value="expense">Only Expenses</option>
-                        </select>
-                    </div>
-                    <div className='form-group'>
-                        <label for='date'>Choose date:  </label>
-                        <DatePicker
-                            className='form-control date-input'
-                            onChange={newDate => newDate !== null ? setFdate(newDate) : setFdate('')}
-                            selected={fDate}
-                            name='date'
-                            autoComplete='off'
-                        />
-                    </div>
-                </div>
+                <button className='btn btn-secondary' onClick={() => toggleFilters()} >Filters</button>
             )
+
+            // return (
+            //     <div className='filters-area'>
+
+            //         <div className="form-group">
+            //             <label htmlFor='mr-sm-2'>Show</label>
+            //             <select className="custom-select mr-sm-2" id="inlineFormCustomSelect" onChange={e => setFtype(e.target.value)}>
+            //                 <option value="">All</option>
+            //                 <option value="income">Only Incomes</option>
+            //                 <option value="expense">Only Expenses</option>
+            //             </select>
+            //         </div>
+
+            //         <div className='form-group'>
+            //             <label htmlFor='mr-sm-2'>Show by month</label>
+            //                 <select className='custom-select mr-sm-2'>
+            //                     <option>January</option>
+            //                 </select>
+            //         </div>
+
+            //         <div className='form-group'>
+            //             <label>
+            //                 <DatePicker
+            //                     className='form-control'
+            //                     onChange={newDate => newDate !== null ? setFdate(newDate) : setFdate('')}
+            //                     selected={fDate}
+            //                     name='date'
+            //                     autoComplete='off'
+            //                 />
+            //                 <i class="calendar big grey icon"></i>
+            //             </label>
+
+            //         </div>
+            //     </div>
+            // )
+        }
+    }
+
+
+    const changeFilterState = (e, type, newDate) => {
+        if (type === 'type') setState({...state, filterType: e.target.getAttribute('data-value')});
+        if (type === 'month') setState({...state, filterDate: '', filterMonth: e.target.getAttribute('data-value')})
+        if (type === 'date') setState({...state, filterMonth: '', filterDate: newDate})
+    }
+
+    const displayFiltersArea = () => {
+        if (state.filtersShow) {
+            return (
+                <FiltersArea 
+                    changeFilterState={changeFilterState}
+                    type={state.filterType}
+                    month={state.filterMonth}
+                    date={state.filterDate}
+                    createdAt={props.user.createdAt}
+                />
+            )
+        } else {
+            return null;
         }
     }
 
@@ -236,7 +233,9 @@ const BudgetLogs = props => {
         // <div className='exercises-container'>{renderExercises()}</div>
         <div className='exercises-list'>
 
-            {renderFiltersArea()}
+            {/* {renderFiltersButton()} */}
+
+            {displayFiltersArea()}
 
             <div className='table-info'>
                 <div>
@@ -271,7 +270,8 @@ const mapStateToProps = (state) => {
     return { 
         isSignedIn: state.auth.isSignedIn, 
         email: state.auth.user.email,
-        userID: state.auth.user._id, 
+        userID: state.auth.user._id,
+        user: state.auth.user,
         token: state.auth.token,
         logs: state.userData.logs,
         budget: state.userData.budget,
@@ -279,4 +279,4 @@ const mapStateToProps = (state) => {
     };
 }
 
-export default connect(mapStateToProps, { getData, filterByType } )(BudgetLogs);
+export default connect(mapStateToProps, { getData, filterByType, filterByDate } )(BudgetLogs);

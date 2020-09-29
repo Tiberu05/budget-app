@@ -85,13 +85,15 @@ const CreateBudgetLog = props => {
                 </div>
 
                 <div className='form-group'>
-                    <label for='date'>Choose date:  </label>
-                    <DatePicker
-                        className='form-control date-input'
-                        onChange={newDate => setDate(newDate)}
-                        selected={date}
-                        name='date'
-                    />
+                    <label> 
+                        <DatePicker
+                            className='form-control date-input'
+                            onChange={newDate => setDate(newDate)}
+                            selected={date}
+                            name='date'
+                        />
+                        <i className="calendar big grey icon"></i>
+                    </label>
                 </div>
                 <br />
                 <button className='btn btn-secondary' type='submit'>Submit</button>

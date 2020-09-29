@@ -1,5 +1,4 @@
 const INITIAL_STATE = {
-    
     totalIncome: null,
     totalExpense: null,
     budget: null,

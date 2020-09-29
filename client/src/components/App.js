@@ -5,6 +5,8 @@ import history from '../history';
 import { connect } from 'react-redux';
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import 'semantic-ui-css/semantic.min.css';
+import 'semantic-ui-react';
 import "jquery/dist/jquery.min.js";
 import './App.css';
 
@@ -17,6 +19,8 @@ import EditLog from './EditLog';
 import BudgetLogs from './BudgetLogs';
 import LoginForm from './LoginForm';
 import Footer from './Footer';
+import FiltersArea from './FiltersArea';
+import FiltersAreaRmk from './FiltersAreaRmk';
 
 import { loadUser, getData } from '../actions';
 
@@ -48,6 +52,8 @@ const App = props => {
                         <Route path='/statistics' exact component={Statistics} />
                         <Route path='/register' exact component={CreateUser} />
                         <Route path='/login' exact component={LoginForm} />
+                        <Route path='/filtersarea' exact component={FiltersArea} />
+                        <Route path='/rmk' exact component={FiltersAreaRmk} />
                     </Switch>
                 </div>
                 <footer>

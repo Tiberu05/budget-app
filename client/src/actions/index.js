@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getDefaultLocale } from 'react-datepicker';
 import history from '../history';
 
 
@@ -11,8 +12,8 @@ import history from '../history';
 //         .catch(err => console.log(err))
 // }
 
-export const getData = (email, type='', date='') => dispatch => {
-    axios.get(`http://localhost:5000/logs/${email}?type=${type}&date=${date}`)
+export const getData = (email, type='', date='', month='') => dispatch => {
+    axios.get(`http://localhost:5000/logs/${email}?type=${type}&date=${date}&monthfilter=${month}`)
         .then(res => dispatch({
             type: "GET_DATA",
             payload: res.data,

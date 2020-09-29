@@ -52,14 +52,14 @@ router.get('/:email', (req, res) => {
 
     //const email = req.params.email;
 
-    const {type, date} = req.query;
+    const {type, date, monthfilter} = req.query;
 
-    let newDate;
+    // let newDate;
 
-    let year;
-    let month;
-    let day;
-    let nextDay;
+    // let year;
+    // let month;
+    // let day;
+    // let nextDay;
 
     let query = {};
 
@@ -70,13 +70,36 @@ router.get('/:email', (req, res) => {
     }
 
     if (date) {
-        newDate = new Date(date);
+        const newDate = new Date(date);
 
-        year = newDate.getFullYear();
-        month = newDate.getMonth();
-        day = newDate.getDate();
-        nextDay = day + 1;
+        const year = newDate.getFullYear();
+        const month = newDate.getMonth();
+        const day = newDate.getDate();
+        const nextDay = day + 1;
         query.date = { $gte: new Date(year, month, day), $lt: new Date(year, month, nextDay) };
+    }
+
+    if (monthfilter) {
+        const year = Number(monthfilter.split('-')[1]);
+        const month = Number(monthfilter.split('-')[0]);
+
+        const newDate = new Date();
+
+        newDate.setFullYear(year);
+        newDate.setMonth(month - 1);
+        newDate.setDate(1);
+
+        const lastDate = new Date();
+        lastDate.setFullYear(year);
+        lastDate.setMonth(month);
+        lastDate.setDate(0);
+
+        //newDate.setDate(10);
+
+        console.log(newDate);
+        console.log(lastDate);
+
+        query.date = { $gte: new Date(year, month - 1, 1), $lt: new Date(year, month, 0) };
     }
 
     console.log(query);
