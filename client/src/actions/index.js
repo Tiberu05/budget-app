@@ -13,6 +13,9 @@ import history from '../history';
 // }
 
 export const getData = (email, type='', date='', month='') => dispatch => {
+
+    dispatch({ type: "DATA_LOADING" });
+
     axios.get(`http://localhost:5000/logs/${email}?type=${type}&date=${date}&monthfilter=${month}`)
         .then(res => dispatch({
             type: "GET_DATA",

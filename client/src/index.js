@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import ReduxThunk from 'redux-thunk';
+import { persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import App from './components/App';
 import reducers from './reducers';
@@ -16,11 +18,13 @@ const store = createStore(
     applyMiddleware(ReduxThunk)
 ));
 
+const persistor = persistStore(store);
+
 
 
 ReactDOM.render(
     <Provider store={store}>
-        <App />
+            <App />
     </Provider>,
     document.querySelector('#root')
 )

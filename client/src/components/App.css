@@ -183,3 +183,15 @@ Link {
       background-color: inherit;
       border-bottom: 2px solid #E3B924;
 }
+
+.pagination-flex {
+    padding: 1em;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.hidden-arrow {
+    visibility: hidden;
+}
+

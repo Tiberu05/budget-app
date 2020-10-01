@@ -7,6 +7,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import FiltersArea from './FiltersArea';
+import Pagination from './Pagination';
 
 import { 
     getData,
@@ -29,12 +30,18 @@ const BudgetLogs = props => {
         filterDate: ''
     });
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [logsPerPage, setLogsPerPage] = useState(10);
+
 
 
     useEffect(() => {
 
+        setTimeout(() => {
+            props.getData(props.email, state.filterType, state.filterDate, state.filterMonth);
+        }, 100)
 
-        props.getData(props.email, state.filterType, state.filterDate, state.filterMonth);
+
 
 
         return () => {
@@ -43,10 +50,11 @@ const BudgetLogs = props => {
         
     }, [state]);
 
-    useEffect(() => {
-        console.log(state);
-    })
 
+    // Get current logs
+    const indexOfLastLog = currentPage * logsPerPage;
+    const indexOfFirstLog = indexOfLastLog - logsPerPage;
+    
 
 
     const deleteExercise = (id) => {
@@ -89,28 +97,53 @@ const BudgetLogs = props => {
 
     const renderExercises = () => {
 
-        if (props.logs.length > 0) {
+        if (props.loading) {
+            return (
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
 
-            const render = props.logs.sort((a, b) => new Date(b.date) - new Date(a.date)).map(el => {
-
-                const classToggle = el.type === 'expense' ? 'expense' : 'income';
-                return (
-                    <tr className={`${classToggle}`} key={el._id}>
-                        <td>{el.date.substring(0, 10)}</td>
-                        <td>{el.type}</td>
-                        <td>{el.description.slice(0, 1).toUpperCase() + el.description.slice(1, el.description.length).toLowerCase()}</td>
-                        <td>{el.sum}</td>
-                        {renderButtons(el)}
-                    </tr>
-                )
-            });
-
-            return render;      
-
+            )
         } else {
+            if (props.logs.length > 0) {
 
-            return null;
+                props.logs.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                const currentLogs = props.logs.slice(indexOfFirstLog, indexOfLastLog);
+
+                const render = currentLogs.map(el => {
+    
+                    const classToggle = el.type === 'expense' ? 'expense' : 'income';
+                    return (
+                        <tr className={`${classToggle}`} key={el._id}>
+                            <td>{el.date.substring(0, 10)}</td>
+                            <td>{el.type}</td>
+                            <td>{el.description.slice(0, 1).toUpperCase() + el.description.slice(1, el.description.length).toLowerCase()}</td>
+                            <td>{el.sum}</td>
+                            {renderButtons(el)}
+                        </tr>
+                    )
+                });
+    
+                return render;      
+    
+            } else {
+    
+                return null;
+            }
         }
+
+        
         
     };
 
@@ -144,17 +177,23 @@ const BudgetLogs = props => {
 
 
     const rendertableTotal = () => {
-        if (props.isSignedIn) {
-            return (
-                    <tr className='table-ending'>
-                        <td>Total</td>
-                        <td></td>
-                        <td></td>
-                        <td>{props.budget}</td>
-                        <td></td>
-                    </tr>
-            )
+
+        if (props.loading) {
+            return null;
+        } else {
+            if (props.isSignedIn) {
+                return (
+                        <tr className='table-ending'>
+                            <td>Total</td>
+                            <td></td>
+                            <td></td>
+                            <td>{props.budget}</td>
+                            <td></td>
+                        </tr>
+                )
+            }
         }
+        
     }
 
     const toggleFilters = () => {
@@ -205,11 +244,27 @@ const BudgetLogs = props => {
         }
     }
 
+    const goToPage = (which) => {
+        if (which === 'next') setCurrentPage(currentPage + 1);
+        if (which === 'prev') setCurrentPage(currentPage - 1);
+
+        window.scrollTo(0, 0);
+    }
+
 
     const changeFilterState = (e, type, newDate) => {
-        if (type === 'type') setState({...state, filterType: e.target.getAttribute('data-value')});
-        if (type === 'month') setState({...state, filterDate: '', filterMonth: e.target.getAttribute('data-value')})
-        if (type === 'date') setState({...state, filterMonth: '', filterDate: newDate})
+        if (type === 'type') {
+            setState({...state, filterType: e.target.getAttribute('data-value')});
+            setCurrentPage(1); 
+        }
+        if (type === 'month') {
+            setState({...state, filterDate: '', filterMonth: e.target.getAttribute('data-value')})
+            setCurrentPage(1);
+        } 
+        if (type === 'date') {
+            setState({...state, filterMonth: '', filterDate: newDate})
+            setCurrentPage(1);
+        } 
     }
 
     const displayFiltersArea = () => {
@@ -221,6 +276,7 @@ const BudgetLogs = props => {
                     month={state.filterMonth}
                     date={state.filterDate}
                     createdAt={props.user.createdAt}
+                    logs={props.logs}
                 />
             )
         } else {
@@ -258,9 +314,10 @@ const BudgetLogs = props => {
                 </thead>
                 <tbody>
                     {renderExercises()}
-                    {rendertableTotal()}
+                    {/* {rendertableTotal()} */}
                 </tbody>
             </table>
+            <Pagination logsPerPage={logsPerPage} totalLogs={props.logs.length} currentPage={currentPage} goToPage={goToPage} />
             {renderText()}
         </div>
     )
@@ -276,6 +333,7 @@ const mapStateToProps = (state) => {
         logs: state.userData.logs,
         budget: state.userData.budget,
         filters: state.filters,
+        loading: state.userData.isLoading
     };
 }
 

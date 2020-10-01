@@ -29,7 +29,7 @@ const typeOptions = [
 
 const FiltersArea = props => {
 
-    const [today, setToday] = useState(new Date('2021-10-08'));
+    const [today, setToday] = useState(new Date());
 
     const [dropdowns, setDropdowns] = useState({
         typeDropdown: false,
@@ -43,6 +43,10 @@ const FiltersArea = props => {
 
 
     useEffect(() => {
+
+
+
+
         if (props.createdAt) {
             const index = parseInt(props.createdAt.substring(5, 7));
 
@@ -55,6 +59,19 @@ const FiltersArea = props => {
     useEffect(() => {
         console.log(dropdowns)
     }, [dropdowns])
+
+    useEffect(() => {
+
+        if (props.logs.length > 0) {
+
+            props.logs.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            const newDate = new Date(props.logs[0].date);
+
+            setToday(newDate);
+        }
+
+    }, [ props.logs])
 
     const renderSelectOptions = () => {
 

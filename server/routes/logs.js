@@ -83,21 +83,21 @@ router.get('/:email', (req, res) => {
         const year = Number(monthfilter.split('-')[1]);
         const month = Number(monthfilter.split('-')[0]);
 
-        const newDate = new Date();
+        // const newDate = new Date();
 
-        newDate.setFullYear(year);
-        newDate.setMonth(month - 1);
-        newDate.setDate(1);
+        // newDate.setFullYear(year);
+        // newDate.setMonth(month - 1);
+        // newDate.setDate(1);
 
-        const lastDate = new Date();
-        lastDate.setFullYear(year);
-        lastDate.setMonth(month);
-        lastDate.setDate(0);
+        // const lastDate = new Date();
+        // lastDate.setFullYear(year);
+        // lastDate.setMonth(month);
+        // lastDate.setDate(0);
 
-        //newDate.setDate(10);
+        // //newDate.setDate(10);
 
-        console.log(newDate);
-        console.log(lastDate);
+        // console.log(newDate);
+        // console.log(lastDate);
 
         query.date = { $gte: new Date(year, month - 1, 1), $lt: new Date(year, month, 0) };
     }
@@ -113,13 +113,16 @@ router.get('/:email', (req, res) => {
     //     })
     //     .catch(err => res.status(400).json({ msg: 'Error'}))
 
+
+        
+
     
     Log.find( query )
         .then(logs => {
             
             const { totalIncome, totalExpense, budget } = getTotals(logs);
 
-            res.json({ totalIncome, totalExpense, budget, logs });
+            res.json({ totalIncome, totalExpense, budget, logs, isLoading: false });
         })
         .catch(err => res.status(400).json({ msg: 'Error'}))
 });
