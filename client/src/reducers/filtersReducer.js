@@ -1,29 +1,21 @@
 const INITIAL_STATE = {
-    date: '',
-    type: ''
+    filterByMonth: '',
+    filterByDate: '',
+    filterByType: '',
+    lastLog: ''
 }
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case "FILTER_DATE":
-            return {
-                ...state,
-                date: action.payload
-            };
-        case "FILTER_TYPE":
-            return {
-                ...state,
-                type: action.payload
-            };
-        case "NO_FILTERS":
-            return {
-                date: '',
-                type: ''
-            }
+        case "SET_FILTERS":
+            return { ...state, ...action.payload};
+        case "SET_FILTER_BY_MONTH":
+            return { ...state, filterByMonth: action.payload, filterByDate: '' };
+        case "SET_FILTER_BY_DATE":
+            return { ...state, filterByDate: action.payload, filterByMonth: '' };
+        case "SET_FILTER_BY_TYPE":
+            return { ...state, filterByType: action.payload };
         default:
-            return {
-                date: '',
-                type: ''
-            }
+            return state;
     }
 };

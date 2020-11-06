@@ -8,8 +8,6 @@ const Pagination = ({ logsPerPage, totalLogs, currentPage, goToPage}) => {
         pageNumbers.push(i);
     }
 
-    console.log(pageNumbers);
-
     const renderPageArrows = () => {
         if (currentPage === pageNumbers[0] && pageNumbers.length > 1) {
             return (

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { setDefaultLocale } from 'react-datepicker';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const options = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -87,6 +88,11 @@ const Statistics = props => {
             <h5>Total Incomes: {props.userData.totalIncome}</h5>
             <h5>Total Expenses: {props.userData.totalExpense}</h5>
             <h5>Budget: {props.userData.budget}</h5>
+
+            <Link to='/changepassword'>
+                <button className='btn btn-secondary' type='button'>Change Password</button>
+            </Link>
+
         </div>
     );
 };

@@ -9,6 +9,36 @@ const auth = require('../middleware/auth');
 const key = process.env.JWT_KEY;
 
 
+// router.post('/changeuserpassword', (req, res) => {
+//     const { userId, currentPassword, newPassword } = req.body;
+//     console.log(currentPassword);
+//     User.findById(mongoose.Types.ObjectId(userId))
+//         .then(user => {
+//             console.log(user);
+//             // Simple Validation
+//             // if (user.password !== currentPassword) {
+//             //     console.log('bad match');
+//             //     return res.status(400).json({ msg: 'Current password field doesn\'t match with your account password' })
+//             // }
+
+//             bcrypt.compare(currentPassword, user.password)
+//                 .then(isMatch => {
+//                     if(!isMatch) return res.status(400).json({ msg: 'Invalid password'})
+                
+//                     bcrypt.genSalt(10, (err, salt) => {
+//                         bcrypt.hash(newUser.password, salt, (err, hash) => {
+//                             if (err) throw err;
+//                             user.password = hash;
+//                             user.save()
+//                                 .then(user => {
+//                                     console.log(succes.)
+//                                 })
+//                 })
+
+//         })
+// })
+
+
 // @route   POST /users
 // @desc    Register new user
 // @acces   Public
@@ -51,7 +81,8 @@ router.post('/add', (req, res) => {
                                         user: {
                                             id: user.id,
                                             name: user.name,
-                                            email: user.email
+                                            email: user.email,
+                                            createdAt: user.createdAt,
                                         }
                                     });
                                 }
@@ -99,7 +130,8 @@ router.post('/login', (req, res) => {
                                 user: {
                                     id: user.id,
                                     name: user.name,
-                                    emil: user.email
+                                    email: user.email,
+                                    createdAt: user.createdAt,
                                 }
                             });
                         }
@@ -108,6 +140,8 @@ router.post('/login', (req, res) => {
             
         })
 })
+
+
 
 const getTotals = array => {
     let total = 0;
@@ -169,6 +203,8 @@ router.put('/update/:id', (req, res) => {
         })
         .catch(err => res.status(400).json({ msg: 'ERROR' }))
 });
+
+
 
 // @route   GET /user
 // @desc    Get user data

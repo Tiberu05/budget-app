@@ -18,9 +18,7 @@ const CreateUser = props => {
 
         props.createUser(name, email, password);
 
-        setTimeout(() => {
-            window.location = '/';
-        }, 200)
+        props.history.push('/');
 
     }
 

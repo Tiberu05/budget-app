@@ -50,16 +50,7 @@ const getTotals = array => {
 
 router.get('/:email', (req, res) => {
 
-    //const email = req.params.email;
-
     const {type, date, monthfilter} = req.query;
-
-    // let newDate;
-
-    // let year;
-    // let month;
-    // let day;
-    // let nextDay;
 
     let query = {};
 
@@ -83,39 +74,9 @@ router.get('/:email', (req, res) => {
         const year = Number(monthfilter.split('-')[1]);
         const month = Number(monthfilter.split('-')[0]);
 
-        // const newDate = new Date();
-
-        // newDate.setFullYear(year);
-        // newDate.setMonth(month - 1);
-        // newDate.setDate(1);
-
-        // const lastDate = new Date();
-        // lastDate.setFullYear(year);
-        // lastDate.setMonth(month);
-        // lastDate.setDate(0);
-
-        // //newDate.setDate(10);
-
-        // console.log(newDate);
-        // console.log(lastDate);
-
         query.date = { $gte: new Date(year, month - 1, 1), $lt: new Date(year, month, 0) };
     }
-
-    console.log(query);
     
-    // Log.find({ email })
-    //     .then(logs => {
-            
-    //         const { totalIncome, totalExpense, budget } = getTotals(logs);
-
-    //         res.json({ totalIncome, totalExpense, budget, logs });
-    //     })
-    //     .catch(err => res.status(400).json({ msg: 'Error'}))
-
-
-        
-
     
     Log.find( query )
         .then(logs => {

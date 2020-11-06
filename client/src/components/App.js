@@ -21,8 +21,9 @@ import LoginForm from './LoginForm';
 import Footer from './Footer';
 import FiltersArea from './FiltersArea';
 import FiltersAreaRmk from './FiltersAreaRmk';
+import ChangePassword from './ChangePassword';
 
-import { loadUser, getData } from '../actions';
+import { loadUser, getData, setFilters } from '../actions';
 
 const App = props => {
 
@@ -30,12 +31,19 @@ const App = props => {
 
     useEffect(() => {
 
-        setPropsEmail(props.email);
-
         props.loadUser();
 
-        
     }, [])
+
+    useEffect(() => {
+
+        setPropsEmail(props.email);
+
+        props.setFilters(props.email);
+
+    }, [props.email])
+
+    console.log('RERENDERED');
 
     return(
         <Router history={history}>
@@ -52,8 +60,11 @@ const App = props => {
                         <Route path='/statistics' exact component={Statistics} />
                         <Route path='/register' exact component={CreateUser} />
                         <Route path='/login' exact component={LoginForm} />
+                        <Route path='/changepassword' exact component={ChangePassword} />
                         <Route path='/filtersarea' exact component={FiltersArea} />
+                        
                         <Route path='/rmk' exact component={FiltersAreaRmk} />
+                        
                     </Switch>
                 </div>
                 <footer>
@@ -70,4 +81,4 @@ const mapStateToProps = state => {
     };
 }
 
-export default connect(mapStateToProps, { loadUser, getData })(App);
+export default connect(mapStateToProps, { loadUser, getData, setFilters })(App);

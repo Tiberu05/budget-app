@@ -4,13 +4,7 @@ const INITIAL_STATE = {
     token: localStorage.getItem('token'),
     isSignedIn: null,
     isLoading: false,
-    user: {
-        data: {
-            total: {},
-            incomes: [],
-            expenses: [],
-        },
-    }
+    user: {}
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -32,9 +26,23 @@ export default (state = INITIAL_STATE, action) => {
             localStorage.setItem('token', action.payload.token);
             return {
                 ...state,
+                token: action.payload.token,
                 user: action.payload.user,
                 isSignedIn: true,
                 isLoading: false,
+            }
+        case "PASSWORD_CHANGE_SUCCES":
+            localStorage.setItem('token', action.payload.token)
+            return {
+                ...state,
+                token: action.payload.token,
+                user: action.payload.user,
+                isSignedIn: true,
+                isLoading: false
+            }
+        case "PASSWORD_CHANGE_FAIL":
+            return {
+                ...state,
             }
         case 'AUTH_ERROR':
         case 'LOGIN_FAIL':
@@ -46,12 +54,7 @@ export default (state = INITIAL_STATE, action) => {
                 token: null,
                 isSignedIn: false,
                 isLoading: false,
-                user: {
-                    data: {
-                        incomes: [],
-                        expenses: []
-                    },
-                }
+                user: {}
             }
         // case 'SIGN_IN':
         //      return { ...state, isSignedIn: true, userID: action.payload.userID, username: action.payload.username };

@@ -13,16 +13,11 @@ import axios from 'axios';
 
 const CreateBudgetLog = props => {
 
-    //const [username, setUsername] = useState('');
     const [description, setDescription] = useState('');
     const [type, setType] = useState('income');
     const [date, setDate] = useState(new Date());
     const [sum, setSum] = useState(0);
-    const [users, setUsers] = useState([]);
 
-    useEffect(() => {
-        console.log(date);
-    }, [date])
 
 
     const onSubmit = e => {
@@ -36,8 +31,6 @@ const CreateBudgetLog = props => {
             sum,
             date
         }
-
-        console.log(createLog);
 
         axios.post(`http://localhost:5000/logs/add/`, createLog, { headers: {'x-auth-token': localStorage.getItem('token')}})
             .then(result => {
@@ -54,18 +47,6 @@ const CreateBudgetLog = props => {
             <h2 className='exercise-form-title'>Create Log</h2>
             <form className='exercise-form' onSubmit={onSubmit}>
 
-
-                {/* <div className='form-group'>
-                    <label for='username'>Username</label>
-                    <input className='form-control' type='text' name='username' autoComplete='off' value={username} onChange={e => setUsername(e.target.value)} />
-                </div> */}
-
-                {/* <div className='form-group'>
-                    <select onChange={e => setType(e.target.value)}>
-                        <option value='income'>Income</option>
-                        <option value='expense'>Expense</option>
-                    </select>
-                </div> */}
 
                 <div className="form-group">
                     <select className="custom-select mr-sm-2" id="inlineFormCustomSelect" onChange={e => setType(e.target.value)}>
@@ -85,15 +66,13 @@ const CreateBudgetLog = props => {
                 </div>
 
                 <div className='form-group'>
-                    <label> 
-                        <DatePicker
-                            className='form-control date-input'
-                            onChange={newDate => setDate(newDate)}
-                            selected={date}
-                            name='date'
-                        />
-                        <i className="calendar big grey icon"></i>
-                    </label>
+                    <label for='date'>Date</label>
+                    <DatePicker
+                        className='form-control date-input'
+                        onChange={newDate => setDate(newDate)}
+                        selected={date}
+                        name='date'
+                    />    
                 </div>
                 <br />
                 <button className='btn btn-secondary' type='submit'>Submit</button>

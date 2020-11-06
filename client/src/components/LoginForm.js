@@ -1,29 +1,30 @@
-import Axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
-import { logIn } from '../actions';
+import { logIn, clearErrors } from '../actions';
 
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import history from '../history';
-
-import axios from 'axios';
 
 const LoginForm = props => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-    const [error, setError] = useState(false);
-    const [errorMsg, setErrorMsg] = useState('');
+    useEffect(() => {
+        if (props.isSignedIn) props.history.push('/');
+    }, [props.isSignedIn])
+
+    useEffect(() => {
+        props.clearErrors()
+    }, [])
 
     const wrongCredentials = () => {
-        if (error) {
+        if (!props.errorMsg.msg) {
             return (
                 <div>
-                    <p className='exercise-form-container red-color-text'>Your credentials are incorrect</p>
+                    <p className='exercise-form-container red-color-text'>{props.errorMsg.msg}</p>
                 </div>
             )
         }
@@ -34,13 +35,8 @@ const LoginForm = props => {
     const onSubmit = e => {
         e.preventDefault();
 
-        props.logIn(email, password);
-
-        setTimeout(() => {
-            window.location = '/';
-        }, 500)
-
-
+        props.logIn(email, password); 
+        
     }
 
     return (
@@ -61,7 +57,7 @@ const LoginForm = props => {
                 <br />
                 <button className='btn btn-secondary' type='submit'>Login</button>
             </form>
-            {wrongCredentials()}
+            <p className='exercise-form-container red-color-text'>{props.errorMsg.msg}</p>
         </div>
     )
 };
@@ -69,7 +65,8 @@ const LoginForm = props => {
 const mapStateToProps = state => {
     return { 
         isSignedIn: state.auth.isSignedIn,
+        errorMsg: state.error.msg
     }
 }
 
-export default connect(mapStateToProps, { logIn }) (LoginForm);
+export default connect(mapStateToProps, { logIn, clearErrors }) (LoginForm);

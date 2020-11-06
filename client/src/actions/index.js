@@ -1,16 +1,10 @@
 import axios from 'axios';
 import { getDefaultLocale } from 'react-datepicker';
 import history from '../history';
+import { sortLogs } from './utility';
 
 
-// export const getData = email => dispatch => {
-//     axios.get(`http://localhost:5000/logs/${email}`)
-//         .then(res => dispatch({
-//             type: "GET_DATA",
-//             payload: res.data,
-//         }))
-//         .catch(err => console.log(err))
-// }
+
 
 export const getData = (email, type='', date='', month='') => dispatch => {
 
@@ -56,13 +50,12 @@ export const loadUser = () => (dispatch, getState) => {
 
 
     axios.get('http://localhost:5000/users/user', tokenConfig(getState))
-        .then(res => dispatch({ 
-            type: 'USER_LOADED',
-            payload: res.data
-        }))
+        .then(res => {
+            dispatch({ type: 'USER_LOADED', payload: res.data});
+            //dispatch(getData(res.data.email));
+        })
         .catch(err => {
-            console.log(err);
-            //dispatch(returnErrors(err.response.data, err.response.status));
+            dispatch(returnErrors(err.response.data, err.response.status));
             dispatch({ type: 'AUTH_ERROR'})
         })
 }
@@ -99,6 +92,7 @@ export const logIn = (email, password) => dispatch => {
     axios.post('http://localhost:5000/users/login', config, { header: { "Content-Type": "application/json" }})
         .then(res => {
             clearErrors();
+            console.log(res.data);
             dispatch({
                 type: 'LOGIN_SUCCES',
                 payload: res.data
@@ -141,20 +135,36 @@ export const tokenConfig = getState => {
 
 // FILTER ACTIONS
 
+export const setFilters = (email) => dispatch => {
+    
+    axios.get(`http://localhost:5000/logs/${email}`)
+        .then(res => dispatch({
+            type: "SET_FILTERS",
+            payload: {
+                lastLog: sortLogs(res.data.logs)[0].date
+            }
+        }))
+        .catch(err => console.log(err))
+}
+
+export const filterByType = (type) => {
+    return {
+        type: "SET_FILTER_BY_TYPE",
+        payload: type
+    }
+};
+
+export const filterByMonth = (month) => {
+    return {
+        type: "SET_FILTER_BY_MONTH",
+        payload: month
+    }
+};
+
 export const filterByDate = (date) => {
     return {
-        type: "FILTER_DATE",
+        type: "SET_FILTER_BY_DATE",
         payload: date
     }
 };
 
-export const filterByType = (filtertype) => {
-    return {
-        type: "FILTER_TYPE",
-        payload: filtertype
-    }
-};
-
-const noFilters = () => {
-    return { type: "NO_FILTERS"};
-}

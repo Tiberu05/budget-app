@@ -29,8 +29,8 @@ body {
 
 .red-color-text {
     color: red;
-    margin: 1em;
-    padding: 1em;
+    margin: 15px;
+    padding: 10px;
 }
 
 /* .green-color-text {
@@ -179,7 +179,7 @@ Link {
 .react-datepicker-wrapper > .react-datepicker__input-container {
       text-align: center;
       border: none;
-      display: none;
+
       background-color: inherit;
       border-bottom: 2px solid #E3B924;
 }
