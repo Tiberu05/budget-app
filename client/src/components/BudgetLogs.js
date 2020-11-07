@@ -11,6 +11,8 @@ import FiltersArea from './FiltersArea';
 import CreateLogButton from './CreateLogButton';
 import Pagination from './Pagination';
 
+import { formatNumber, limitTitle } from '../actions/utility';
+
 import { 
     getData,
     filterByDate,
@@ -49,7 +51,7 @@ const BudgetLogs = props => {
 
     const renderExercises = () => {
 
-        if (props.loading) {
+        if (props.loading && props.isSignedIn) {
             return (
                 <tr>
                     <td></td>
@@ -78,10 +80,10 @@ const BudgetLogs = props => {
                     const classToggle = el.type === 'expense' ? 'expense' : 'income';
                     return (
                         <tr className={`${classToggle}`} key={el._id}>
-                            <td>{el.date.substring(0, 10)}</td>
-                            <td>{el.type}</td>
-                            <td>{el.description.slice(0, 1).toUpperCase() + el.description.slice(1, el.description.length).toLowerCase()}</td>
-                            <td>{el.sum}</td>
+                            <td className='align-middle'>{el.date.substring(0, 10)}</td>
+                            <td className='type-field align-middle'>{el.type}</td>
+                            <td className='item-description align-middle'>{limitTitle(el.description)}</td>
+                            <td className='align-middle'>{formatNumber(el.sum)}</td>
                             <ActionButtons log={el} />
                         </tr>
                     )
@@ -118,8 +120,6 @@ const BudgetLogs = props => {
     return (
         <div className='exercises-list'>
 
-            <FiltersArea />
-
             <div className='table-info'>
                 <div>
                     <h2>Your Budget Logs</h2>
@@ -129,11 +129,12 @@ const BudgetLogs = props => {
                 </div>
      
             </div>
+            <div class="table-responsive">
             <table className='table'>
                 <thead className='table-active'>
                     <tr>
                         <td>Date</td>
-                        <td>Type</td>
+                        <td className='type-field'>Type</td>
                         <td>Description</td>
                         <td>Sum</td>
                         <td>Actions</td>
@@ -143,6 +144,8 @@ const BudgetLogs = props => {
                     {renderExercises()}
                 </tbody>
             </table>
+            </div>
+            
             <Pagination logsPerPage={logsPerPage} totalLogs={props.logs.length} currentPage={currentPage} goToPage={goToPage} />
             {renderText()}
         </div>
@@ -153,12 +156,10 @@ const mapStateToProps = (state) => {
     return { 
         isSignedIn: state.auth.isSignedIn, 
         email: state.auth.user.email,
-        user: state.auth.user,
         logs: state.userData.logs,
         filters: state.filters,
         loading: state.userData.isLoading,
-        lastLog: state.filters.lastLog,
     };
 }
 
-export default React.memo(connect(mapStateToProps, { getData, filterByType, filterByMonth, filterByDate } )(BudgetLogs));
+export default connect(mapStateToProps, { getData, filterByType, filterByMonth, filterByDate } )(BudgetLogs);

@@ -62,9 +62,14 @@ const Navbar = props => {
                         <li className="nav-item">
                             <NavLink className="nav-link" exact to="/logs" activeClassName="active">Logs</NavLink>
                         </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" exact to="/statistics" activeClassName="active">Statistics</NavLink>
-                        </li>
+                        {
+                            !props.isSignedIn ? null : (
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" exact to="/profile" activeClassName="active">Profile</NavLink>
+                                </li>
+                            )
+                        }
+                        
                         {renderNavLink()}
                     </ul>
                     <ul className="navbar-nav ml-auto">

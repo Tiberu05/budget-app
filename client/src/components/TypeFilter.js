@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
 import { filterByType } from '../actions/index';
+
 
 const TypeFilter = (props) => {
 
     const [dropdown, setDropdown] = useState(false);
+    const filterType = useSelector(state => state.filters.filterByType);
 
     const handleFilter = (e) => {
 
@@ -13,10 +15,10 @@ const TypeFilter = (props) => {
     };
 
     return (
-        <div className='filters-flex-item'>
+        <div className='filters-flex-item type-filter'>
             <div  aria-expanded='true' onClick={() => setDropdown(!dropdown)} className="ui floating dropdown labeled icon button" >
                 <i className="filter icon"></i>
-                <span className="text">{props.filterType === '' ? 'Show All' : props.filterType.slice(0, 1).toUpperCase() + props.filterType.slice(1, props.filterType.length) + 's'  } </span>
+                <span className="text">{filterType === '' ? 'Show All' : filterType.slice(0, 1).toUpperCase() + filterType.slice(1, filterType.length) + 's'  } </span>
                 <div className={`menu ${dropdown ? 'transition visible' : ''}`}>
                     <div className="scrolling menu">
                         <div className="item" data-value='' onClick={e => handleFilter(e)}>
@@ -38,10 +40,5 @@ const TypeFilter = (props) => {
     )
 };
 
-const mapStateToProps = state => {
-    return {
-        filterType: state.filters.filterByType
-    }
-}
 
-export default connect(mapStateToProps, { filterByType })(TypeFilter);
+export default connect(null, { filterByType })(TypeFilter);

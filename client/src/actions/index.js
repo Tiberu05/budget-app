@@ -168,3 +168,8 @@ export const filterByDate = (date) => {
     }
 };
 
+export const clearFilters = () => {
+    return {
+        type: "CLEAR_FILTERS"
+    }
+}

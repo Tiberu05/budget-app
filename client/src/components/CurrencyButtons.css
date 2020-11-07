@@ -1,0 +1,14 @@
+.ui.black.basic.button {
+  -webkit-transform: scale(0.9);
+          transform: scale(0.9);
+}
+
+.ui.black.basic.button:hover {
+  background-color: grey !important;
+}
+
+.ui.black.basic.button.active {
+  background-color: grey !important;
+  color: white !important;
+}
+/*# sourceMappingURL=CurrencyButtons.css.map */

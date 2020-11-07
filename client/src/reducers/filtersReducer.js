@@ -15,6 +15,8 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, filterByDate: action.payload, filterByMonth: '' };
         case "SET_FILTER_BY_TYPE":
             return { ...state, filterByType: action.payload };
+        case "CLEAR_FILTERS":
+            return { ...state, filterByType: '', filterByMonth: '', filterByDate: ''}
         default:
             return state;
     }

@@ -9,19 +9,34 @@
     .exercise-form-title {
         margin-left: 1em;
     }
-    
+
+    .container-main {
+        max-width: 1180px;
+        width: 1180px;
+    }
+
+}
+
+* {
+    box-sizing: border-box;
 }
 
 .container-main {
     min-height: 100vh;
     margin-bottom: 15px;
+    max-width: 100%;
 }
 
 .filters-area {
     display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
-
+.table > tbody > tr > .item-description {
+    width: 300px;
+}
 
 body {
     background-color: #eeecec;
@@ -72,8 +87,15 @@ body {
     margin-top: 20%;
 }
 
+.table {
+    table-layout: fixed;
+    word-wrap: break-word;
+    align-items: center;
+}
+
 .table td {
     text-align: center;
+    
 }
 
 .table-ending {
@@ -124,6 +146,10 @@ body {
     background-color: inherit;
 }
 
+.type-field {
+    display: none;
+}
+
 .table-info > div {
     margin: 5px;
 }
@@ -137,7 +163,7 @@ Link {
 }
 
 .exercises-list {
-    margin-top: 2em;
+    margin-top: 15px;
 }
 
 
@@ -145,9 +171,6 @@ Link {
     border-color:  #6c757d;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px rgba(141, 129, 129, 0.9);
 }
-
-
-
 
 
 .styled-button {
@@ -172,16 +195,43 @@ Link {
     background-color: rgb(52,58,64);
 }
 
-.react-datepicker-wrapper {
+/* .react-datepicker-wrapper {
     font-size: 10px;
 }
     
 .react-datepicker-wrapper > .react-datepicker__input-container {
       text-align: center;
       border: none;
-
-      background-color: inherit;
+     
+      background-color: inherit !important;
       border-bottom: 2px solid #E3B924;
+} */
+
+
+
+.react-datepicker-wrapper,
+.react-datepicker__input-container,
+.react-datepicker__input-container input {
+    display: block;
+    text-align: center;
+    width: 90%;
+    background-color: inherit;
+    height: 36px;
+}
+
+.window.close.outline {
+    margin-right: 0 !important;
+}
+
+
+.calendar.icon {
+    transform: translateY(50px);
+    transform: scale(1.6);
+
+}
+
+.ui.negative.basic.button {
+    height: 36px;
 }
 
 .pagination-flex {

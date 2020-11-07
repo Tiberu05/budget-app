@@ -1,0 +1,22 @@
+@keyframes fromRight {
+    from {
+        transform: translateX(350px);
+        opacity: 0.1
+    }
+
+    90% {
+        transform: translateX(-20px);
+        opacity: 0.5;
+    }
+
+    to {
+        transform: translate(0);
+        opacity: 0.8;
+    }
+}
+
+.ui.negative.basic.button {
+    animation-name: fromRight;
+    animation-duration: 0.25s;
+}
+

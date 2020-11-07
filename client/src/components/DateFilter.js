@@ -19,7 +19,7 @@ const DateFilter = (props) => {
     return (
         <div className='filters-flex-item'>
             <div className='form-group'>
-                <label>
+                <div className="ui left icon input">
                     <DatePicker
                         className='form-control'
                         onChange={(newDate, e) => newDate !== null ? handleFilter(newDate) : handleFilter('')}
@@ -27,8 +27,8 @@ const DateFilter = (props) => {
                         selected={props.filterDate}
                         autoComplete='off'
                     />
-                    <i className="calendar big grey icon"></i>
-                </label>
+                    <i className="calendar icon"></i>         
+                </div>
             </div>
         </div>
     )

@@ -23,7 +23,7 @@ const MonthFilter = (props) => {
 
             setState({ startMonth: options[index - 1], year})
         }
-    }, []);
+    }, [props.createdAt]);
 
     const renderSelectOptions = () => {
 
@@ -54,18 +54,17 @@ const MonthFilter = (props) => {
 
                 if (i === 11) {
                     year += 1;
-                    i = 0;
+                    i = -1;
                 }
             } else if (year === todayYear && i === todayMonthIndex) {
                 dates.push({ month: options[i], year , value: `${i + 1}-${year}`});
                 break;
-            } else if (year === todayYear && i !== todayMonthIndex + 1) {
+            } else if (year === todayYear && i !== todayMonthIndex) {
                 dates.push({ month: options[i], year , value: `${i + 1}-${year}`});
             }
         }    
 
         const render = dates.map(el => {
-            // return <option key={el.value} value={el.value}>{el.month} {el.year}</option>
             return (
                 <div key={el.value} className="item" data-value={`${el.value}`} onClick={e => handleFilter(e)}>
                     {el.month} {el.year}

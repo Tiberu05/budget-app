@@ -1,10 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { Button } from '@material-ui/core';
+
 
 import TypeFilter from './TypeFilter';
 import MonthFilter from './MonthFilter';
 import DateFilter from './DateFilter';
+import RemoveFilters from './RemoveFilters';
 
 
 const FiltersArea = props => {
@@ -18,6 +21,8 @@ const FiltersArea = props => {
             <MonthFilter />
 
             <DateFilter />
+
+            <RemoveFilters />
                 
         </div>
     )

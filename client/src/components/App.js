@@ -10,13 +10,15 @@ import 'semantic-ui-react';
 import "jquery/dist/jquery.min.js";
 import './App.css';
 
+
 import HomePage from './HomePage';
+import BudgetPage from '../pages/budget-page/BudgetPage';
+import ProfilePage from '../pages/profile-page/ProfilePage';
+
 import Navbar from './Navbar';
 import CreateBudgetLog from './CreateBudgetLog';
-import Statistics from './Statistics';
 import CreateUser from './CreateUser';
 import EditLog from './EditLog';
-import BudgetLogs from './BudgetLogs';
 import LoginForm from './LoginForm';
 import Footer from './Footer';
 import FiltersArea from './FiltersArea';
@@ -27,8 +29,6 @@ import { loadUser, getData, setFilters } from '../actions';
 
 const App = props => {
 
-    const [propsEmail, setPropsEmail] = useState('');
-
     useEffect(() => {
 
         props.loadUser();
@@ -36,8 +36,6 @@ const App = props => {
     }, [])
 
     useEffect(() => {
-
-        setPropsEmail(props.email);
 
         props.setFilters(props.email);
 
@@ -54,10 +52,10 @@ const App = props => {
                 <div className='container container-main'>
                     <Switch>
                         <Route path='/' exact component={HomePage} />
-                        <Route path='/logs' exact component={BudgetLogs} mail={propsEmail} />
+                        <Route path='/logs' exact component={BudgetPage} />
                         <Route path='/logs/edit/:id' exact component={EditLog} />
                         <Route path='/create' exact component={CreateBudgetLog} />
-                        <Route path='/statistics' exact component={Statistics} />
+                        <Route path='/profile' exact component={ProfilePage} />
                         <Route path='/register' exact component={CreateUser} />
                         <Route path='/login' exact component={LoginForm} />
                         <Route path='/changepassword' exact component={ChangePassword} />
@@ -77,7 +75,6 @@ const App = props => {
 const mapStateToProps = state => {
     return {
         email: state.auth.user.email,
-        filters: state.filters
     };
 }
 
