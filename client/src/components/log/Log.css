@@ -1,0 +1,43 @@
+.table-item .action-buttons {
+  display: none;
+  -webkit-animation-name: fromUp;
+          animation-name: fromUp;
+  -webkit-animation-duration: 0.2s;
+          animation-duration: 0.2s;
+}
+
+.table-item:hover {
+  -webkit-box-shadow: 0 0 15px 1px grey;
+          box-shadow: 0 0 15px 1px grey;
+}
+
+.table-item:hover .action-buttons {
+  display: table-cell;
+}
+
+@-webkit-keyframes fromUp {
+  from {
+    opacity: 0.1;
+    -webkit-transform: translateY(-200px);
+            transform: translateY(-200px);
+  }
+  to {
+    opacity: 0.8;
+    -webkit-transform: translate(0);
+            transform: translate(0);
+  }
+}
+
+@keyframes fromUp {
+  from {
+    opacity: 0.1;
+    -webkit-transform: translateY(-200px);
+            transform: translateY(-200px);
+  }
+  to {
+    opacity: 0.8;
+    -webkit-transform: translate(0);
+            transform: translate(0);
+  }
+}
+/*# sourceMappingURL=Log.css.map */

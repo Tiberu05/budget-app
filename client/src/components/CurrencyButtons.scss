@@ -3,5 +3,11 @@
 
     &:hover {
         outline-style: groove;
+        background-color: grey !important;
+    }
+
+    &.active-currency {
+        background-color: grey !important;
     }
 }
+

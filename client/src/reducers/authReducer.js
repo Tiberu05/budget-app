@@ -2,7 +2,7 @@ import history from '../history';
 
 const INITIAL_STATE = {
     token: localStorage.getItem('token'),
-    isSignedIn: null,
+    isSignedIn: false,
     isLoading: false,
     user: {}
 }

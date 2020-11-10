@@ -4,11 +4,11 @@
 }
 
 .ui.black.basic.button:hover {
+  outline-style: groove;
   background-color: grey !important;
 }
 
-.ui.black.basic.button.active {
+.ui.black.basic.button.active-currency {
   background-color: grey !important;
-  color: white !important;
 }
 /*# sourceMappingURL=CurrencyButtons.css.map */

@@ -3,11 +3,13 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { getData } from '../actions';
+import "./ActionButtons.css";
+
+import { getData } from '../../actions';
 
 const ActionButtons = (props) => {
 
-    const { log } = props;
+    const { log, display } = props;
 
     const deleteExercise = (id) => {
         axios.delete(`http://localhost:5000/logs/${id}`)
@@ -19,12 +21,12 @@ const ActionButtons = (props) => {
     }
 
     return (
-        <td>
-        <Link to={`logs/edit/${log._id}`}>
-            <button className='btn btn-outline-secondary btn-sm' href={`logs/edit/${log._id}`}>Edit</button>
-        </Link>
-        <button className='btn btn-outline-danger btn-sm' onClick={() => deleteExercise(log._id)}>Delete</button>
-    </td>
+        <div className='action-buttons'>
+            <Link to={`logs/edit/${log._id}`}>
+                <button className='btn btn-outline-secondary btn-sm' href={`logs/edit/${log._id}`}>Edit</button>
+            </Link>
+            <button className='btn btn-outline-danger btn-sm' onClick={() => deleteExercise(log._id)}>Delete</button>
+        </div>
     )
 };
 

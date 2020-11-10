@@ -1,0 +1,35 @@
+
+
+.table-item {
+
+    .action-buttons {
+        display: none;
+        animation-name: fromUp;
+        animation-duration: 0.2s;
+    }
+
+
+
+    &:hover {
+
+        box-shadow: 0 0 15px 1px grey;
+
+        .action-buttons {
+            display: table-cell;
+        }
+
+
+    }
+
+    @keyframes fromUp {
+        from {
+            opacity: 0.1;
+            transform: translateY(-200px)
+        }
+    
+        to {
+            opacity: 0.8;
+            transform: translate(0)
+        }
+    }
+}

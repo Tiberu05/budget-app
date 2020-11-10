@@ -12,10 +12,10 @@ export const getData = (email, type='', date='', month='') => dispatch => {
 
     axios.get(`http://localhost:5000/logs/${email}?type=${type}&date=${date}&monthfilter=${month}`)
         .then(res => dispatch({
-            type: "GET_DATA",
+            type: "GET_DATA_SUCCES",
             payload: res.data,
         }))
-        .catch(err => console.log(err))
+        .catch(err => dispatch({type: "GET_DATA_FAILURE"}))
 }
 
 //

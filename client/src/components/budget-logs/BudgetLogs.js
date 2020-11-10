@@ -2,23 +2,21 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import axios from 'axios';
+import './BudgetLogs.css';
+
 import 'react-datepicker/dist/react-datepicker.css';
 
-import ActionButtons from './ActionButtons';
+import CreateLogButton from '../CreateLogButton';
+import Pagination from '../pagination/Pagination';
+import Log from '../log/Log';
 
-import FiltersArea from './FiltersArea';
-import CreateLogButton from './CreateLogButton';
-import Pagination from './Pagination';
-
-import { formatNumber, limitTitle } from '../actions/utility';
 
 import { 
     getData,
     filterByDate,
     filterByType,
     filterByMonth
-} from '../actions';
+} from '../../actions';
 
 
 const BudgetLogs = props => {
@@ -27,6 +25,7 @@ const BudgetLogs = props => {
     const [currentPage, setCurrentPage] = useState(1);
     const [logsPerPage, setLogsPerPage] = useState(10);
 
+    const [displayActions, setDisplayActions] = useState(false);
 
     useEffect(() => {
 
@@ -42,8 +41,8 @@ const BudgetLogs = props => {
     const indexOfFirstLog = indexOfLastLog - logsPerPage;
     
     const goToPage = (which) => {
-        if (which === 'next') setCurrentPage(currentPage + 1);
-        if (which === 'prev') setCurrentPage(currentPage - 1);
+        if (which === 'right') setCurrentPage(currentPage + 1);
+        if (which === 'left') setCurrentPage(currentPage - 1);
 
         window.scrollTo(0, 0);
     }
@@ -79,13 +78,7 @@ const BudgetLogs = props => {
     
                     const classToggle = el.type === 'expense' ? 'expense' : 'income';
                     return (
-                        <tr className={`${classToggle}`} key={el._id}>
-                            <td className='align-middle'>{el.date.substring(0, 10)}</td>
-                            <td className='type-field align-middle'>{el.type}</td>
-                            <td className='item-description align-middle'>{limitTitle(el.description)}</td>
-                            <td className='align-middle'>{formatNumber(el.sum)}</td>
-                            <ActionButtons log={el} />
-                        </tr>
+                        <Log rowClass={classToggle} el={el} />
                     )
                 });
     
@@ -137,7 +130,7 @@ const BudgetLogs = props => {
                         <td className='type-field'>Type</td>
                         <td>Description</td>
                         <td>Sum</td>
-                        <td>Actions</td>
+                        <td className='actions'>Actions</td>
                     </tr>
                 </thead>
                 <tbody>

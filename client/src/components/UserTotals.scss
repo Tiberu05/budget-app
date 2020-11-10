@@ -1,0 +1,39 @@
+
+
+.user-totals {
+    //border: 1px solid black;
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+
+    @media only screen and (min-width: 1080px) {
+        width: 500px;
+    }
+}
+
+
+
+.table-header {
+    padding: 5px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: lightgrey;
+    //border-bottom: 1px solid black;
+}
+
+.hide-button {
+    position: absolute;
+    margin-top: 7px;
+    margin-left: 7px;
+    color: #0645AD;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.table-body {
+    margin-top: 5px;
+    padding: 5px;
+}

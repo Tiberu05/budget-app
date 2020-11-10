@@ -10,9 +10,7 @@ const ProfilePage = props => {
         <div className='exercises-list'>
 
             <h2>User: {props.name}</h2>
-            <h5>Total Incomes: {props.userData.totalIncome}</h5>
-            <h5>Total Expenses: {props.userData.totalExpense}</h5>
-            <h5>Budget: {props.userData.budget}</h5>
+
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '5px' }}>
                 <h5 style={{ margin: '0'}}>Currency:</h5>
                 <CurrencyButtons />
