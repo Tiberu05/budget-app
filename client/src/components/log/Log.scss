@@ -1,21 +1,56 @@
+div {
+    //border: 1px solid magenta;
+}
 
+.table-item__date {
+    width: 15%;
+    text-align: center;
+}
+
+.table-item__description {
+    width: 50%;
+    margin-left: 10px;
+}
+
+.table-item__sum {
+    width: 20%;
+}
+
+.table-item__actions {
+    display: none;
+    margin-left: auto;
+
+}
 
 .table-item {
 
+    display: flex;
+    justify-content: flex-start;
+    height: 60px;
+    align-items: center;
+
+    
+
     .action-buttons {
-        display: none;
+        //display: none;
         animation-name: fromUp;
         animation-duration: 0.2s;
+        
     }
-
-
 
     &:hover {
 
         box-shadow: 0 0 15px 1px grey;
 
-        .action-buttons {
-            display: table-cell;
+        
+        .table-item__actions {
+            display: block;
+            width: 13%;
+        }
+
+        .table-item__description {
+            width: 50%;
+            text-align: left;
         }
 
 

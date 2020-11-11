@@ -2,4 +2,31 @@
     width: 160px;
 }
 
+.table {
+
+    .table-head {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        height: 40px;
+
+        // .table-item__date {
+        //     width: 15%;
+        // }
+    
+        // .table-item__description {
+        //     width: 50%;
+        // }
+    
+        // .table-item__sum {
+        //     width: 15%;
+        // }
+    }
+
+    .table-body {
+        padding: 0;
+        margin-top: 0;
+    }
+}
+
 

@@ -6,24 +6,34 @@ import { connect } from 'react-redux';
 
 const ChangePassword = (props) => {
 
-    const [oldPassword, setOldPassword] = useState('');
+    //const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [newPasswordCheck, setNewPasswordCheck] = useState('');
     const [error, setError] = useState('');
+    const [succesMessage, setSuccesMessage] = useState('');
 
-    console.log(props.userId);
+    console.log(props);
 
     const onSubmit = e => {
 
         e.preventDefault();
 
-        // if (newPassword !== newPasswordCheck) {
-        //     setError('New password fields does not match');
-        // }
+        if (newPassword !== newPasswordCheck) {
+            setError('New password fields does not match');
+        }
 
-        // console.log(props.userId);
+        const config = {
+            newPassword: newPassword,
+            email: props.match.params.email,
+            token: props.match.params.token,
+            date: Date.now()
+        }
 
-        // props.changePassword(props.userId, oldPassword, newPassword);
+        axios.post('http://localhost:5000/users/changepassword', config)
+            .then(res => {
+                setSuccesMessage('Password has been changed succesfully');
+            })
+            .catch(err => setError(err));
     }
 
     return (
@@ -31,10 +41,10 @@ const ChangePassword = (props) => {
             <h2 className='exercise-form-title'>Change Password</h2>
             <form className='exercise-form' onSubmit={onSubmit} >
 
-                <div className='form-group'>
+                {/* <div className='form-group'>
                     <label htmlFor='email'>Current Password</label>
                     <input className='form-control' type='password' name='password' autoComplete='off' value={oldPassword} onChange={e => setOldPassword(e.target.value)} />
-                </div>
+                </div> */}
 
                 <div className='form-group'>
                     <label htmlFor='password'>New Password</label>
@@ -48,8 +58,10 @@ const ChangePassword = (props) => {
 
                 <br />
                 <button className='btn btn-secondary' type='submit'>Change Password</button>
+                <p>{succesMessage}</p>
+                <p className='exercise-form-container red-color-text'>{error}</p>
             </form>
-            <p className='exercise-form-container red-color-text'></p>
+
         </div>
     )
 };

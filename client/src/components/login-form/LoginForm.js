@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-
 import { connect } from 'react-redux';
-import { logIn, clearErrors } from '../actions';
+import { Link } from 'react-router-dom';
+import { logIn, clearErrors } from '../../actions';
 
-import FormInput from './FormInput';
+import './LoginForm.css';
+
+import FormInput from '../FormInput';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -66,8 +68,13 @@ const LoginForm = props => {
 
                 <br />
                 <button className='btn btn-secondary' type='submit'>Login</button>
+                <Link to='/resetpassword'>
+                    <div className="forgot-password">Forgot password?</div>
+                </Link>
+                
+                <p className='exercise-form-container red-color-text'>{props.errorMsg.msg}</p>
             </form>
-            <p className='exercise-form-container red-color-text'>{props.errorMsg.msg}</p>
+            
         </div>
     )
 };

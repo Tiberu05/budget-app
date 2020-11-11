@@ -122,21 +122,17 @@ const BudgetLogs = props => {
                 </div>
      
             </div>
-            <div class="table-responsive">
-            <table className='table'>
-                <thead className='table-active'>
-                    <tr>
-                        <td>Date</td>
-                        <td className='type-field'>Type</td>
-                        <td>Description</td>
-                        <td>Sum</td>
-                        <td className='actions'>Actions</td>
-                    </tr>
-                </thead>
-                <tbody>
+            <div className='table'>
+                <div className='table-active table-head'>
+                    <div className='table-item__date'>Date</div>
+                    {/* <div className='table-item__type'>Type</div> */}
+                    <div className='table-item__description'>Description</div>
+                    <div className='table-item__sum'>Sum</div>
+                    {/* <div className='table-item__actions'>Actions</div> */}
+                </div>
+                <div className='table-body'>
                     {renderExercises()}
-                </tbody>
-            </table>
+                </div>
             </div>
             
             <Pagination logsPerPage={logsPerPage} totalLogs={props.logs.length} currentPage={currentPage} goToPage={goToPage} />

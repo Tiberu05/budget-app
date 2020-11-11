@@ -4,39 +4,21 @@ let User = require('../models/user.model');
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const auth = require('../middleware/auth');
+const nodemailer = require('nodemailer');
+
+const transport = nodemailer.createTransport({
+    host: "smtp.mailtrap.io",
+    port: 2525,
+    auth: {
+      user: process.env.MAILTRAP_USER,
+      pass: process.env.MAILTRAP_PASS
+    }
+  });
 
 const key = process.env.JWT_KEY;
 
-
-// router.post('/changeuserpassword', (req, res) => {
-//     const { userId, currentPassword, newPassword } = req.body;
-//     console.log(currentPassword);
-//     User.findById(mongoose.Types.ObjectId(userId))
-//         .then(user => {
-//             console.log(user);
-//             // Simple Validation
-//             // if (user.password !== currentPassword) {
-//             //     console.log('bad match');
-//             //     return res.status(400).json({ msg: 'Current password field doesn\'t match with your account password' })
-//             // }
-
-//             bcrypt.compare(currentPassword, user.password)
-//                 .then(isMatch => {
-//                     if(!isMatch) return res.status(400).json({ msg: 'Invalid password'})
-                
-//                     bcrypt.genSalt(10, (err, salt) => {
-//                         bcrypt.hash(newUser.password, salt, (err, hash) => {
-//                             if (err) throw err;
-//                             user.password = hash;
-//                             user.save()
-//                                 .then(user => {
-//                                     console.log(succes.)
-//                                 })
-//                 })
-
-//         })
-// })
 
 
 // @route   POST /users
@@ -90,10 +72,109 @@ router.post('/add', (req, res) => {
 
                             
                         })
+                        .catch(err => console.log(err))
+                    .then(result => {
+                        console.log(newUser.email);
+                        transport.sendMail({
+                            to: newUser.email,
+                            from: 'admin@budgtapptest.com',
+                            subject: 'Signup',
+                            html: '<h1>You have been successfully signed up!<h1>'
+                        })
+                    })
+                    .catch(err => console.log(err))
                 })
             })
         })
 
+});
+
+
+router.post('/resetpassword', (req, res) => {
+    crypto.randomBytes(32, (err, buffer) => {
+        if (err) {
+            console.log(err);
+        }
+
+        const token = buffer.toString('hex');
+
+        User.findOne({email: req.body.email})
+            .then(user => {
+                console.log(user);
+                if (!user) {
+                    res.status(400).json({ msg: 'No user found'})
+                }
+
+                user.resetToken = token;
+                user.resetTokenExpiration = Date.now() + 3600000;
+                return user.save();
+            })
+            .then(result => {
+                transport.sendMail({
+                    to: req.body.email,
+                    from: 'admin@budgtapptest.com',
+                    subject: 'Password reset',
+                    html: `
+                        <p>You requested a password reset</p>
+                        <p>Click this <a href='/localhost:3000/changepassword/${token}/${req.body.email}'>link</a> to set a new password</p>
+                    `
+                })
+            })
+            .catch(err => console.log(err))
+
+    })
+})
+
+router.post('/changepassword', (req, res) => {
+    
+    User.findOne({email: req.body.email})
+        .then(user => {
+            if (!user) return res.status(400).json({ msg: 'No such user'});
+
+            if (req.body.token !== user.resetToken) return res.status(400).json({ msg: 'Token is invalid'});
+
+            if (req.body.date > user.resetTokenExpiration) return res.status(400).json({ msg: 'Token has expired'});
+
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(req.body.newPassword, salt, (err, hash) => {
+                    if (err) throw err;
+                    user.password = hash;
+                    user.save()
+                        .then(user => {
+
+                            jwt.sign(
+                                { id: user.id },
+                                process.env.JWT_KEY,
+                                { expiresIn: 3600 },
+                                (err, token) => {
+                                    if (err) throw err;
+                                    res.json({
+                                        token,
+                                        user: {
+                                            id: user.id,
+                                            name: user.name,
+                                            email: user.email,
+                                            createdAt: user.createdAt,
+                                        }
+                                    });
+                                }
+                            )
+
+                            
+                        })
+                        .catch(err => console.log(err))
+                    .then(result => {
+                        transport.sendMail({
+                            to: req.body.email,
+                            from: 'admin@budgtapptest.com',
+                            subject: 'Password changed',
+                            html: '<h1>You have successfully changed your password!<h1>'
+                        })
+                    })
+                    .catch(err => console.log(err))
+                })
+            })
+        })
 })
 
 

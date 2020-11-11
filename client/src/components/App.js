@@ -19,11 +19,12 @@ import Navbar from './Navbar';
 import CreateBudgetLog from './CreateBudgetLog';
 import CreateUser from './CreateUser';
 import EditLog from './EditLog';
-import LoginForm from './LoginForm';
+import LoginForm from './login-form/LoginForm';
 import Footer from './Footer';
 import FiltersArea from './FiltersArea';
 import FiltersAreaRmk from './FiltersAreaRmk';
 import ChangePassword from './ChangePassword';
+import ResetPassword from './reset-password/ResetPassword';
 
 import { loadUser, getData, setFilters } from '../actions';
 
@@ -58,7 +59,8 @@ const App = props => {
                         <Route path='/profile' exact component={ProfilePage} />
                         <Route path='/register' exact component={CreateUser} />
                         <Route path='/login' exact component={LoginForm} />
-                        <Route path='/changepassword' exact component={ChangePassword} />
+                        <Route path='/changepassword/:token/:email' exact component={ChangePassword} />
+                        <Route path='/resetpassword' exact component={ResetPassword} />
                         <Route path='/filtersarea' exact component={FiltersArea} />
                         
                         <Route path='/rmk' exact component={FiltersAreaRmk} />

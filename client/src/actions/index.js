@@ -60,6 +60,7 @@ export const loadUser = () => (dispatch, getState) => {
         })
 }
 
+
 export const createUser = (name, email, password) => dispatch => {
 
     const config = {
