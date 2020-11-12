@@ -1,3 +1,23 @@
 .hidden-arrow {
     visibility: hidden;
 }
+
+.pages {
+    display: flex;
+    gap: 10px;
+    margin: 0 auto;
+}
+
+.active-page {
+    color: blue;
+    transform: scale(1.5);
+}
+
+.page-number {
+
+
+    &:hover {
+        transform: scale(2);
+        cursor:pointer;
+    }
+}

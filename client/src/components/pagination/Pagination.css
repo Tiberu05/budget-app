@@ -1,4 +1,24 @@
 .hidden-arrow {
   visibility: hidden;
 }
+
+.pages {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 10px;
+  margin: 0 auto;
+}
+
+.active-page {
+  color: blue;
+  -webkit-transform: scale(1.5);
+          transform: scale(1.5);
+}
+
+.page-number:hover {
+  -webkit-transform: scale(2);
+          transform: scale(2);
+  cursor: pointer;
+}
 /*# sourceMappingURL=Pagination.css.map */

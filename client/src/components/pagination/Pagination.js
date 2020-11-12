@@ -13,12 +13,23 @@ const Pagination = ({ logsPerPage, totalLogs, currentPage, goToPage}) => {
         pageNumbers.push(i);
     }
 
+
     const renderPageArrows = () => {
         if (currentPage === pageNumbers[0] && pageNumbers.length > 1) {
             return (
                 <React.Fragment>
                     <Arrow currentPage={currentPage} hidden={true} pageNumbers={pageNumbers} direction={'left'} goToPage={goToPage}/>
-                    <div>Page {currentPage} / {pageNumbers[pageNumbers.length - 1]}</div>
+                    <div className='pages'>
+                        {
+                            pageNumbers.map(el => {
+                                if (el === currentPage) {
+                                    return <div key={el} className='active-page' onClick={() => goToPage(null, el)}>{el}</div>
+                                } else {
+                                    return <div key={el} className='page-number' onClick={() => goToPage(null, el)}>{el}</div>
+                                }
+                            })
+                        }
+                    </div>
                     <Arrow currentPage={currentPage} hidden={false} pageNumbers={pageNumbers} direction={'right'} goToPage={goToPage} />
                 </React.Fragment>
             )
@@ -26,7 +37,17 @@ const Pagination = ({ logsPerPage, totalLogs, currentPage, goToPage}) => {
             return (
                 <React.Fragment>
                     <Arrow currentPage={currentPage} hidden={false} pageNumbers={pageNumbers} direction={'left'} goToPage={goToPage}/>
-                    <div>Page {currentPage} / {pageNumbers[pageNumbers.length - 1]}</div>
+                    <div className='pages'>
+                        {
+                            pageNumbers.map(el => {
+                                if (el === currentPage) {
+                                    return <div key={el} className='active-page' onClick={() => goToPage(null, el)}>{el}</div>
+                                } else {
+                                    return <div key={el} className='page-number' onClick={() => goToPage(null, el)}>{el}</div>
+                                }
+                            })
+                        }
+                    </div>
                     <Arrow currentPage={currentPage} hidden={true} pageNumbers={pageNumbers} direction={'right'} goToPage={goToPage}/>
                 </React.Fragment>
             )
@@ -34,7 +55,17 @@ const Pagination = ({ logsPerPage, totalLogs, currentPage, goToPage}) => {
             return (
                 <React.Fragment>
                     <Arrow currentPage={currentPage} hidden={false} pageNumbers={pageNumbers} direction={'left'} goToPage={goToPage}/>
-                    <div>Page {currentPage} / {pageNumbers[pageNumbers.length - 1]}</div>
+                    <div className='pages'>
+                        {
+                            pageNumbers.map(el => {
+                                if (el === currentPage) {
+                                    return <div key={el} className='active-page' onClick={() => goToPage(null, el)}>{el}</div>
+                                } else {
+                                    return <div key={el} className='page-number' onClick={() => goToPage(null, el)}>{el}</div>
+                                }
+                            })
+                        }
+                    </div>
                     <Arrow currentPage={currentPage} hidden={false} pageNumbers={pageNumbers} direction={'right'} goToPage={goToPage}/>
                 </React.Fragment>
             )
@@ -42,12 +73,23 @@ const Pagination = ({ logsPerPage, totalLogs, currentPage, goToPage}) => {
              return (
                 <React.Fragment>
                     <Arrow currentPage={currentPage} hidden={true} pageNumbers={pageNumbers} direction={'left'} goToPage={goToPage}/>
-                    <div>Page {currentPage} / {pageNumbers[pageNumbers.length - 1]}</div>
+                    <div className='pages'>
+                        {
+                            pageNumbers.map(el => {
+                                if (el === currentPage) {
+                                    return <div key={el}  className='active-page' onClick={() => goToPage(null, el)}>{el}</div>
+                                } else {
+                                    return <div key={el} className='page-number' onClick={() => goToPage(null, el)}>{el}</div>
+                                }
+                            })
+                        }
+                    </div>
                     <Arrow currentPage={currentPage} hidden={true} pageNumbers={pageNumbers} direction={'right'} goToPage={goToPage}/>
                 </React.Fragment>
              )
         }
     }
+
 
     return (
         <div className='pagination-flex'>

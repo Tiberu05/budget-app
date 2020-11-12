@@ -5,7 +5,7 @@ const CreateLogButton = () => {
 
     return (
         <Link to='/create'>
-            <button className='btn btn-secondary'>Add new budget log</button>
+            <button className='ui secondary basic button'>Add new budget log</button>
         </Link>
     )
 };

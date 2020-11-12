@@ -8,6 +8,7 @@ const logSchema = new Schema({
     type: { type: String, required: true},
     sum: { type: Number, required: true},
     date: { type: Date, required: true},
+    currency: { type: String, required: true},
 });
 
 const Log = mongoose.model('Log', logSchema);

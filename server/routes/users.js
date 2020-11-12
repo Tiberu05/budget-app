@@ -74,7 +74,6 @@ router.post('/add', (req, res) => {
                         })
                         .catch(err => console.log(err))
                     .then(result => {
-                        console.log(newUser.email);
                         transport.sendMail({
                             to: newUser.email,
                             from: 'admin@budgtapptest.com',
@@ -100,7 +99,6 @@ router.post('/resetpassword', (req, res) => {
 
         User.findOne({email: req.body.email})
             .then(user => {
-                console.log(user);
                 if (!user) {
                     res.status(400).json({ msg: 'No user found'})
                 }
@@ -155,6 +153,7 @@ router.post('/changepassword', (req, res) => {
                                             name: user.name,
                                             email: user.email,
                                             createdAt: user.createdAt,
+                                            preferredCurrency: user.preferredCurrency
                                         }
                                     });
                                 }
@@ -213,6 +212,7 @@ router.post('/login', (req, res) => {
                                     name: user.name,
                                     email: user.email,
                                     createdAt: user.createdAt,
+                                    preferredCurrency: user.preferredCurrency
                                 }
                             });
                         }
@@ -296,56 +296,17 @@ router.get('/user', auth, (req, res) => {
         .then(user => res.json(user));
 })
 
-// router.post('/add', (req, res) => {
+router.post('/changecurrency', (req, res) => {
+    const { email, currency } = req.body;
 
-//     const { username, email, password } = req.body;
-
-
-//     const newUser = new User({
-//         username,
-//         email,
-//         password,
-//     });
-
-//     newUser.save()
-//         .then(() => res.json('User added'))
-//         .catch(err => res.status(400).json('Error: ' + err));
-// });
-
-// router.post('/login', (req, res) => {
-
-//     const { username, password } = req.body;
-
-
-//     User.findOne({ username })
-//         .then(user => {
-//             if (user.password === password) {
-//                 res.json({ username: user.username, id: user._id, msg: "Logged In", okCredentials: true });
-//             } else {
-//                 res.json({ okCredentials: false });
-//             }
-//         })
-//         .catch(err => console.log(err));
-// });
-
-// router.get('/', (req, res) => {
-//     User.find()
-//         .then(users => res.json(users))
-//         .catch(err => res.status(400).json('Error: ' + err));
-// });
-
-// router.post('/add', (req, res) => {
-//     const username = req.body.username;
-
-//     console.log(req.body);
-
-//     const newuser = new User({username});
-
-//     newuser.save()
-//         .then(() => res.json('User added'))
-//         .catch(err => res.status(400).json('Error: ' + err));
-
-// })
+    User.findOne({ email })
+        .then(user => {
+            user.preferredCurrency = currency;
+            return user.save();
+        })
+        .then(result => res.status(200).json(result.preferredCurrency))
+        .catch(err => console.log(err))
+});
 
 
 

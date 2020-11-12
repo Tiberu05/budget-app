@@ -56,10 +56,6 @@ export default (state = INITIAL_STATE, action) => {
                 isLoading: false,
                 user: {}
             }
-        // case 'SIGN_IN':
-        //      return { ...state, isSignedIn: true, userID: action.payload.userID, username: action.payload.username };
-        // case 'SIGN_OUT': 
-        //     return { ...state, isSignedIn: false, userID: null, username: null };
         default:
             return state;
     }

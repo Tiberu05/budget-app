@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { connect, useSelector } from 'react-redux';
 
 import './BudgetLogs.css';
 
@@ -9,6 +9,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import CreateLogButton from '../CreateLogButton';
 import Pagination from '../pagination/Pagination';
 import Log from '../log/Log';
+import Spinner from '../spinner/Spinner';
 
 
 import { 
@@ -18,12 +19,26 @@ import {
     filterByMonth
 } from '../../actions';
 
+const options = {
+    method: "GET",
+    url: "https://fixer-fixer-currency-v1.p.rapidapi.com/convert",
+    params: {from: "USD", to: "EUR", amount: "1100"},
+    headers: {
+      "x-rapidapi-key": "3e4c2b32e1mshe96d706c5fef168p16fb6bjsn7e3f74935e33",
+      "x-rapidapi-host": "fixer-fixer-currency-v1.p.rapidapi.com"
+    }
+};
+  
+  
+
 
 const BudgetLogs = props => {
 
 
     const [currentPage, setCurrentPage] = useState(1);
     const [logsPerPage, setLogsPerPage] = useState(10);
+    const [rates, setRates] = useState({});
+    const currency = useSelector(state => state.exchange.preferredCurrency);
 
     const [displayActions, setDisplayActions] = useState(false);
 
@@ -33,40 +48,27 @@ const BudgetLogs = props => {
         
     }, [props.filters]);
 
-    console.log('BUDGET LOGS AREA rerendered');
-
 
     // PAGINATION
     const indexOfLastLog = currentPage * logsPerPage;
     const indexOfFirstLog = indexOfLastLog - logsPerPage;
     
-    const goToPage = (which) => {
-        if (which === 'right') setCurrentPage(currentPage + 1);
-        if (which === 'left') setCurrentPage(currentPage - 1);
+    const goToPage = (which, pageNumber) => {
+        if (which !== null) {
+            if (which === 'right') setCurrentPage(currentPage + 1);
+            if (which === 'left') setCurrentPage(currentPage - 1);
+        } else {
+            setCurrentPage(pageNumber);
+        }
 
         window.scrollTo(0, 0);
     }
 
 
-    const renderExercises = () => {
+    const renderLogs = () => {
 
         if (props.loading && props.isSignedIn) {
-            return (
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <div className="d-flex justify-content-center">
-                            <div className="spinner-border" role="status">
-                                <span className="sr-only">Loading...</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td></td>
-                    <td></td>
-                </tr>
-
-            )
+            return <Spinner />
         } else {
             if (props.logs.length > 0) {
 
@@ -78,7 +80,7 @@ const BudgetLogs = props => {
     
                     const classToggle = el.type === 'expense' ? 'expense' : 'income';
                     return (
-                        <Log rowClass={classToggle} el={el} />
+                        <Log rates={rates} currency={currency} key={el._id} rowClass={classToggle} el={el} />
                     )
                 });
     
@@ -130,8 +132,8 @@ const BudgetLogs = props => {
                     <div className='table-item__sum'>Sum</div>
                     {/* <div className='table-item__actions'>Actions</div> */}
                 </div>
-                <div className='table-body'>
-                    {renderExercises()}
+                <div className={`table-body ${props.logs.length > 0 ? 'full-height' : ''}`}>
+                    {renderLogs()}
                 </div>
             </div>
             

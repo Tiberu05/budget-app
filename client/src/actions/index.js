@@ -1,6 +1,4 @@
 import axios from 'axios';
-import { getDefaultLocale } from 'react-datepicker';
-import history from '../history';
 import { sortLogs } from './utility';
 
 
@@ -52,12 +50,43 @@ export const loadUser = () => (dispatch, getState) => {
     axios.get('http://localhost:5000/users/user', tokenConfig(getState))
         .then(res => {
             dispatch({ type: 'USER_LOADED', payload: res.data});
+            console.log(res.data);
+            dispatch({ type: 'SET_CURRENCY', payload: res.data.preferredCurrency})
+            dispatch(getRatesRON());
+            dispatch(getRatesUSD());
             //dispatch(getData(res.data.email));
         })
         .catch(err => {
             dispatch(returnErrors(err.response.data, err.response.status));
             dispatch({ type: 'AUTH_ERROR'})
         })
+}
+
+
+export const setCurrency = (email, currency) => dispatch => {
+
+    const config = {
+        email,
+        currency
+    }
+
+    axios.post('http://localhost:5000/users/changecurrency', config)
+        .then(res => dispatch({ type: 'SET_CURRENCY', payload: res.data}))
+        .catch(err => console.log(err))
+};
+
+export const getRatesRON = () => dispatch => {
+    fetch(`https://api.exchangeratesapi.io/latest?base=RON`)
+                .then((resp) => resp.json())
+                .then((data) => dispatch({ type: 'GET_RATES_RON', payload: data.rates}))
+                .catch(err => console.log(err))
+}
+
+export const getRatesUSD = () => dispatch => {
+    fetch(`https://api.exchangeratesapi.io/latest?base=USD`)
+                .then((resp) => resp.json())
+                .then((data) => dispatch({ type: 'GET_RATES_USD', payload: data.rates}))
+                .catch(err => console.log(err))
 }
 
 
@@ -93,11 +122,11 @@ export const logIn = (email, password) => dispatch => {
     axios.post('http://localhost:5000/users/login', config, { header: { "Content-Type": "application/json" }})
         .then(res => {
             clearErrors();
-            console.log(res.data);
             dispatch({
                 type: 'LOGIN_SUCCES',
                 payload: res.data
             })
+            dispatch({ type: 'SET_CURRENCY', payload: res.data.user.preferredCurrency})
 
         })
         .catch(err => {

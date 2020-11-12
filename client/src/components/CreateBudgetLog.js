@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+import CurrencyButtons from './CurrencyButtons';
 
 import { getData } from '../actions';
 
@@ -18,6 +19,7 @@ const CreateBudgetLog = props => {
     const [type, setType] = useState('income');
     const [date, setDate] = useState(new Date());
     const [sum, setSum] = useState(0);
+    const [currency, setCurrency] = useState('RON');
 
 
 
@@ -30,7 +32,8 @@ const CreateBudgetLog = props => {
             type,
             description,
             sum,
-            date
+            date,
+            currency
         }
 
         axios.post(`http://localhost:5000/logs/add/`, createLog, { headers: {'x-auth-token': localStorage.getItem('token')}})
@@ -65,6 +68,15 @@ const CreateBudgetLog = props => {
                     <label for='duration'>Value</label>
                     <input className='form-control' type='text' name='duration' autoComplete='off' value={sum} onChange={e => setSum(e.target.value)} />
                 </div>
+
+                <div className='form-group'>
+                    <div className='currency-buttons'>
+                        <div className='currency-div'>Currency: </div>
+                        <button type='button' class={`ui black basic button ${currency === 'USD' ? 'active-currency' : null}`} onClick={() => setCurrency('USD')}>USD</button>
+                        <button type='button' class={`ui black basic button ${currency === 'RON' ? 'active-currency' : null}`} onClick={() => setCurrency('RON')}>RON</button>
+                    </div>
+                </div>
+                
 
                 <div className='form-group'>
                     <label for='date'>Date</label>

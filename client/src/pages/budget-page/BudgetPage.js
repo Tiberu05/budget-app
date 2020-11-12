@@ -6,6 +6,7 @@ import './BudgetPage.css';
 import BudgetLogs from '../../components/budget-logs/BudgetLogs';
 import UserTotals from '../../components/UserTotals';
 import FiltersArea from '../../components/FiltersArea';
+import CurrencyButtons from '../../components/CurrencyButtons';
 
 const BudgetPage = () => {
 
@@ -20,12 +21,13 @@ const BudgetPage = () => {
 
                     <div>
                         <FiltersArea />
-                        <UserTotals />
+                        <CurrencyButtons />
                     </div>                    
                 )
             }
 
             <BudgetLogs />
+
 
         </div>
 

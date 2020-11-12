@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -12,7 +12,6 @@ const ProfilePage = props => {
             <h2>User: {props.name}</h2>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '5px' }}>
-                <h5 style={{ margin: '0'}}>Currency:</h5>
                 <CurrencyButtons />
             </div>
 
@@ -33,4 +32,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, {})(ProfilePage);
+export default connect(mapStateToProps, {  })(ProfilePage);

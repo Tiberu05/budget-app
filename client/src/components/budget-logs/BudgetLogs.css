@@ -18,5 +18,12 @@
 .table .table-body {
   padding: 0;
   margin-top: 0;
+  height: 50px;
+  min-height: 50px;
+}
+
+.table .table-body.full-height {
+  height: 600px;
+  min-height: 600px;
 }
 /*# sourceMappingURL=BudgetLogs.css.map */

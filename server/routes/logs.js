@@ -7,7 +7,7 @@ const auth = require('../middleware/auth');
 // POST LOG
 
 router.post('/add', (req, res) => {
-    const { email, description, type, sum } = req.body;
+    const { email, description, type, sum, currency } = req.body;
 
     const date = Date.parse(req.body.date);
 
@@ -16,7 +16,8 @@ router.post('/add', (req, res) => {
         description,
         type,
         sum,
-        date
+        date,
+        currency
     });
 
     console.log(newLog);

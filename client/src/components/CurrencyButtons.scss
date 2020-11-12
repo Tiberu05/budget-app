@@ -1,13 +1,25 @@
-.ui.black.basic.button {
-    transform: scale(0.9);
+.currency-buttons {
+    display: flex;
+    align-items: center;
 
-    &:hover {
-        outline-style: groove;
-        background-color: grey !important;
+    .currency-div {
+        font-size: 1.8rem;
     }
 
-    &.active-currency {
-        background-color: grey !important;
+    .ui.black.basic.button {
+        transform: scale(0.9);
+
+        &:hover {
+            outline-style: groove;
+            background-color: grey !important;
+            color: white !important;
+        }
+
+        &.active-currency {
+            background-color: grey !important;
+            color: white !important;
+        }
     }
-}
+}  
+    
 
