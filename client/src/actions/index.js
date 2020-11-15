@@ -104,7 +104,9 @@ export const createUser = (name, email, password) => dispatch => {
             dispatch({
                type: 'REGISTER_SUCCES',
                payload: res.data
-           }) 
+           });
+           dispatch(getRatesRON());
+           dispatch(getRatesUSD());
         })
         .catch(err => {
             dispatch(returnErrors(err.response.data, err.response.status));
@@ -126,7 +128,9 @@ export const logIn = (email, password) => dispatch => {
                 type: 'LOGIN_SUCCES',
                 payload: res.data
             })
-            dispatch({ type: 'SET_CURRENCY', payload: res.data.user.preferredCurrency})
+            dispatch({ type: 'SET_CURRENCY', payload: res.data.user.preferredCurrency});
+            dispatch(getRatesRON());
+            dispatch(getRatesUSD());
 
         })
         .catch(err => {

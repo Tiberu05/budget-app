@@ -41,7 +41,8 @@ router.post('/add', (req, res) => {
             const newUser = new User({
                 name,
                 email,
-                password
+                password,
+                preferredCurrency: 'RON'
             });
 
             // Create salt & hash

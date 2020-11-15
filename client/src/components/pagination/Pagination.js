@@ -13,6 +13,9 @@ const Pagination = ({ logsPerPage, totalLogs, currentPage, goToPage}) => {
         pageNumbers.push(i);
     }
 
+    console.log(currentPage);
+    console.log(pageNumbers.length);
+
 
     const renderPageArrows = () => {
         if (currentPage === pageNumbers[0] && pageNumbers.length > 1) {
@@ -33,7 +36,8 @@ const Pagination = ({ logsPerPage, totalLogs, currentPage, goToPage}) => {
                     <Arrow currentPage={currentPage} hidden={false} pageNumbers={pageNumbers} direction={'right'} goToPage={goToPage} />
                 </React.Fragment>
             )
-        } else if (currentPage === pageNumbers[pageNumbers.length - 1] && pageNumbers.length > 1) {
+        } else if (currentPage === pageNumbers.length && pageNumbers.length > 1) {
+            console.log(true);
             return (
                 <React.Fragment>
                     <Arrow currentPage={currentPage} hidden={false} pageNumbers={pageNumbers} direction={'left'} goToPage={goToPage}/>

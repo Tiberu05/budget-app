@@ -69,16 +69,19 @@ router.get('/:email', (req, res) => {
         const day = newDate.getDate();
         const nextDay = day + 1;
         query.date = { $gte: new Date(year, month, day), $lt: new Date(year, month, nextDay) };
+
+        console.log(query);
     }
 
     if (monthfilter) {
         const year = Number(monthfilter.split('-')[1]);
         const month = Number(monthfilter.split('-')[0]);
 
-        query.date = { $gte: new Date(year, month - 1, 1), $lt: new Date(year, month, 0) };
+        query.date = { $gte: new Date(year, month - 1, 1), $lt: new Date(year, month, 1) };
+
     }
     
-    
+
     Log.find( query )
         .then(logs => {
             

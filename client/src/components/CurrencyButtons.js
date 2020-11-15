@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect, useSelector } from 'react-redux';
 
 import './CurrencyButtons.css';
@@ -10,6 +10,10 @@ const CurrencyButtons = props => {
     const currency = useSelector(state => state.exchange.preferredCurrency);
     const email = useSelector(state => state.auth.user.email);
     const [activeButton, setActiveButton] = useState(currency);
+
+    useEffect(() => {
+        setActiveButton(currency)
+    }, [currency])
 
     const handleCurrencyChange = curr => {
         setActiveButton(curr);
