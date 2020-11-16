@@ -4,23 +4,15 @@
 
 .table {
 
+
     .table-head {
         display: flex;
         justify-content: flex-start;
         align-items: center;
         height: 40px;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
 
-        // .table-item__date {
-        //     width: 15%;
-        // }
-    
-        // .table-item__description {
-        //     width: 50%;
-        // }
-    
-        // .table-item__sum {
-        //     width: 15%;
-        // }
     }
 
     .table-body {

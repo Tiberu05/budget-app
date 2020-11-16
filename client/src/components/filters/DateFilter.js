@@ -1,17 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import DatePicker from 'react-datepicker';
 
-import { filterByDate } from '../actions/index';
+import { filterByDate } from '../../actions/index';
 
 const DateFilter = (props) => {
 
-    const [dropdown, setDropdown] = useState(false);
 
     const handleFilter = (newDate) => {
-
-        console.log(newDate);
 
         props.filterByDate(newDate);
     };

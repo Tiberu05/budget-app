@@ -4,20 +4,18 @@ import { useSelector } from 'react-redux';
 import './BudgetPage.css';
 
 import BudgetLogs from '../../components/budget-logs/BudgetLogs';
-import UserTotals from '../../components/UserTotals';
-import FiltersArea from '../../components/FiltersArea';
-import CurrencyButtons from '../../components/CurrencyButtons';
+import FiltersArea from '../../components/filters/FiltersArea';
+import CurrencyButtons from '../../components/currency-buttons/CurrencyButtons';
 
 const BudgetPage = () => {
 
     const isSignedIn = useSelector(state => state.auth.isSignedIn);
-    const isLoading = useSelector(state => state.userData.isLoading);
 
     return (
         <div className='budget-page'>
 
             {
-                !isSignedIn && isLoading ? null : (
+                !isSignedIn ? null : (
 
                     <div>
                         <FiltersArea />

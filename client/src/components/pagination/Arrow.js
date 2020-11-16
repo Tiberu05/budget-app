@@ -2,7 +2,7 @@ import React from 'react';
 
 const Arrow = props => {
 
-    const { hidden, direction, currentPage, pageNumbers, goToPage } = props;
+    const { hidden, direction,  goToPage } = props;
 
     return (
             <div className={`${direction}-pointer ${hidden ? 'hidden-arrow' : ''}`} onClick={() => goToPage(direction)}>

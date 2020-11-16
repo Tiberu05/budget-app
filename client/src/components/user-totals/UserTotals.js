@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { connect, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import './UserTotals.css';
 
@@ -7,7 +7,6 @@ const UserTotals = props => {
 
     const userData = useSelector(state => state.userData);
     const [hide, setHide] = useState(true);
-    const hideButtonRef = useRef();
 
     return (
         <div className={`user-totals ${!hide ? 'border' : ''}`}>

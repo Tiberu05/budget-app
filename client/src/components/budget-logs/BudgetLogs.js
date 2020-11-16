@@ -1,52 +1,54 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { connect, useSelector } from 'react-redux';
 
+// CSS
 import './BudgetLogs.css';
 
+// REACT DATEPICKER CSS
 import 'react-datepicker/dist/react-datepicker.css';
 
+// COMPONENTS IMPORTS
 import CreateLogButton from '../CreateLogButton';
 import Pagination from '../pagination/Pagination';
 import Log from '../log/Log';
 import Spinner from '../spinner/Spinner';
 
-
+// ACTIONS IMPORTS
 import { 
     getData,
     filterByDate,
     filterByType,
     filterByMonth
 } from '../../actions';
-
-const options = {
-    method: "GET",
-    url: "https://fixer-fixer-currency-v1.p.rapidapi.com/convert",
-    params: {from: "USD", to: "EUR", amount: "1100"},
-    headers: {
-      "x-rapidapi-key": "3e4c2b32e1mshe96d706c5fef168p16fb6bjsn7e3f74935e33",
-      "x-rapidapi-host": "fixer-fixer-currency-v1.p.rapidapi.com"
-    }
-};
   
-  
-
 
 const BudgetLogs = props => {
 
+    // PROPS DESTRUCTURING
+    const { email, filters, getData } = props;
 
+    console.log('BUDGET LOGS RENDER');
+
+
+    // FRONTEND PAGINATION VARIABLES
     const [currentPage, setCurrentPage] = useState(1);
-    const [logsPerPage, setLogsPerPage] = useState(10);
-    const [rates, setRates] = useState({});
+    const logsPerPage = 10;
+
+
+    // EXTRACTING THE USER PREFERRED CURRENCY
     const currency = useSelector(state => state.exchange.preferredCurrency);
 
-    const [displayActions, setDisplayActions] = useState(false);
 
+    // GETTING THE DATA FROM THE BACKEND BASED ON USERS EMAIL
+    // FILTERS SHOULD BE ON THE FRONTEND IN THIS CASE BECAUSE THERE IS NO IMPROVEMENT ON PERFOMANCE
     useEffect(() => {
 
-        props.getData(props.email, props.filters.filterByType, props.filters.filterByDate, props.filters.filterByMonth);
+        getData(email, filters.filterByType, filters.filterByDate, filters.filterByMonth);
+
+        // SETTING THE CURRENT PAGE TO 1 EVERY TIME NEW FILTERS ARE SET
+        setCurrentPage(1);
         
-    }, [props.filters]);
+    }, [filters, email, getData]);
 
 
     // PAGINATION
@@ -65,6 +67,7 @@ const BudgetLogs = props => {
     }
 
 
+    // FUNCTION FOR RENDERING THE LOGS BASED ON CONDITIONS
     const renderLogs = () => {
 
         if (props.loading && props.isSignedIn) {
@@ -80,7 +83,7 @@ const BudgetLogs = props => {
     
                     const classToggle = el.type === 'expense' ? 'expense' : 'income';
                     return (
-                        <Log rates={rates} currency={currency} key={el._id} rowClass={classToggle} el={el} />
+                        <Log currency={currency} key={el._id} rowClass={classToggle} el={el} />
                     )
                 });
     
@@ -91,11 +94,10 @@ const BudgetLogs = props => {
                 return null;
             }
         }
-
-        
         
     };
 
+    // FUNCTION FOR RENDERING TEXT BASED ON CONDITIONS
     const renderText = () => {
         if (!props.isSignedIn) {
             return (
@@ -111,6 +113,8 @@ const BudgetLogs = props => {
             ) 
         }
     };
+
+
 
     return (
         <div className='exercises-list'>
@@ -142,6 +146,7 @@ const BudgetLogs = props => {
         </div>
     )
 };
+
 
 const mapStateToProps = (state) => {
     return { 

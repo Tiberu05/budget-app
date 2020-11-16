@@ -12,27 +12,23 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const LoginForm = props => {
 
+    const { isSignedIn, history, clearErrors } = props
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+
 
     useEffect(() => {
-        if (props.isSignedIn) props.history.push('/');
-    }, [props.isSignedIn])
+        if (isSignedIn) history.push('/');
+    }, [isSignedIn, history])
+
 
     useEffect(() => {
-        props.clearErrors()
-    }, [])
-
-    const wrongCredentials = () => {
-        if (!props.errorMsg.msg) {
-            return (
-                <div>
-                    <p className='exercise-form-container red-color-text'>{props.errorMsg.msg}</p>
-                </div>
-            )
+        return () => {
+            clearErrors();
         }
-    };
+    }, [clearErrors])
+
 
     const onChange = (e, type) => {
         if (type === 'email') setEmail(e.target.value);
@@ -52,16 +48,6 @@ const LoginForm = props => {
             <h2 className='exercise-form-title'>Login</h2>
             <form className='exercise-form' onSubmit={onSubmit} >
 
-                {/* <div className='form-group'>
-                    <label for='email'>Email</label>
-                    <input className='form-control' type='text' name='email' autoComplete='off' value={email} onChange={e => setEmail(e.target.value)} />
-                </div>
-
-                <div className='form-group'>
-                    <label for='password'>Password</label>
-                    <input className='form-control' type='password' name='password' autoComplete='off' value={password} onChange={e => setPassword(e.target.value)} />
-                </div> */}
-
                 <FormInput type='email' value={email} onChange={onChange} />
 
                 <FormInput type='password' value={password} onChange={onChange} />
@@ -71,8 +57,15 @@ const LoginForm = props => {
                 <Link to='/resetpassword'>
                     <div className="forgot-password">Forgot password?</div>
                 </Link>
+
+                {
+                    !props.errorMsg ? null : (
+                        props.errorMsg.msg === "Authorization denied" ? null : (
+                            <p className='exercise-form-container red-color-text'>{props.errorMsg.msg}</p>
+                        )
+                    )    
+                }
                 
-                <p className='exercise-form-container red-color-text'>{props.errorMsg.msg}</p>
             </form>
             
         </div>

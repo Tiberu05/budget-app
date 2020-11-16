@@ -50,7 +50,6 @@ export const loadUser = () => (dispatch, getState) => {
     axios.get('http://localhost:5000/users/user', tokenConfig(getState))
         .then(res => {
             dispatch({ type: 'USER_LOADED', payload: res.data});
-            console.log(res.data);
             dispatch({ type: 'SET_CURRENCY', payload: res.data.preferredCurrency})
             dispatch(getRatesRON());
             dispatch(getRatesUSD());

@@ -9,7 +9,7 @@ import { getData } from '../../actions';
 
 const ActionButtons = (props) => {
 
-    const { log, display } = props;
+    const { log } = props;
 
     const deleteExercise = (id) => {
         axios.delete(`http://localhost:5000/logs/${id}`)

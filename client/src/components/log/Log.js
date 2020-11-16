@@ -9,7 +9,9 @@ import { formatNumber, limitTitle } from '../../actions/utility';
 
 const Log = props => {
 
-    const { rowClass, el, rates } = props;
+    console.log('RENDER');
+
+    const { rowClass, el } = props;
     const exchange = useSelector(state => state.exchange);
 
     const exchangeAction = (el, exchangeTo) => {

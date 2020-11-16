@@ -13,6 +13,13 @@
     transform: scale(1.5);
 }
 
+.left-pointer,.right-pointer {
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
 .page-number {
 
 

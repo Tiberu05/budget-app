@@ -1,19 +1,16 @@
-import Axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import CurrencyButtons from './CurrencyButtons';
+import { getData } from '../../actions';
 
-import { getData } from '../actions';
-
-import history from '../history';
+import history from '../../history';
 
 import axios from 'axios';
 
-const CreateBudgetLog = props => {
+const CreateLog = props => {
 
     const [description, setDescription] = useState('');
     const [type, setType] = useState('income');
@@ -60,26 +57,26 @@ const CreateBudgetLog = props => {
                 </div>
 
                 <div className='form-group'>
-                    <label for='description'>Description</label>
+                    <label htmlFor='description'>Description</label>
                     <input className='form-control' type='text' name='description' autoComplete='off' value={description} onChange={e => setDescription(e.target.value)} />
                 </div>
 
                 <div className='form-group'>
-                    <label for='duration'>Value</label>
+                    <label htmlFor='duration'>Value</label>
                     <input className='form-control' type='text' name='duration' autoComplete='off' value={sum} onChange={e => setSum(e.target.value)} />
                 </div>
 
                 <div className='form-group'>
                     <div className='currency-buttons'>
                         <div className='currency-div'>Currency: </div>
-                        <button type='button' class={`ui black basic button ${currency === 'USD' ? 'active-currency' : null}`} onClick={() => setCurrency('USD')}>USD</button>
-                        <button type='button' class={`ui black basic button ${currency === 'RON' ? 'active-currency' : null}`} onClick={() => setCurrency('RON')}>RON</button>
+                        <button type='button' className={`ui black basic button ${currency === 'USD' ? 'active-currency' : null}`} onClick={() => setCurrency('USD')}>USD</button>
+                        <button type='button' className={`ui black basic button ${currency === 'RON' ? 'active-currency' : null}`} onClick={() => setCurrency('RON')}>RON</button>
                     </div>
                 </div>
                 
 
                 <div className='form-group'>
-                    <label for='date'>Date</label>
+                    <label htmlFor='date'>Date</label>
                     <DatePicker
                         className='form-control date-input'
                         onChange={newDate => setDate(newDate)}
@@ -98,8 +95,7 @@ const mapStateToProps = state => {
     return { 
         email: state.auth.user.email,
         userID: state.auth.user._id,
-        email: state.auth.user.email
     };
 }
 
-export default connect(mapStateToProps, { getData } )(CreateBudgetLog);
+export default connect(mapStateToProps, { getData } )(CreateLog);

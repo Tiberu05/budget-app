@@ -3,7 +3,7 @@ import { connect, useSelector } from 'react-redux';
 
 import './CurrencyButtons.css';
 
-import { setCurrency } from '../actions';
+import { setCurrency } from '../../actions';
 
 const CurrencyButtons = props => {
 
@@ -23,8 +23,8 @@ const CurrencyButtons = props => {
     return (
         <div className='currency-buttons'>
             <div className='currency-div'>Currency: </div>
-            <button class={`ui black basic button ${activeButton === 'USD' ? 'active-currency' : null}`} onClick={() => handleCurrencyChange('USD')}>USD</button>
-            <button class={`ui black basic button ${activeButton === 'RON' ? 'active-currency' : null}`} onClick={() => handleCurrencyChange('RON')}>RON</button>
+            <button className={`ui black basic button ${activeButton === 'USD' ? 'active-currency' : null}`} onClick={() => handleCurrencyChange('USD')}>USD</button>
+            <button className={`ui black basic button ${activeButton === 'RON' ? 'active-currency' : null}`} onClick={() => handleCurrencyChange('RON')}>RON</button>
         </div>
     )
 };

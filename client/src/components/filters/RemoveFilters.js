@@ -3,15 +3,13 @@ import { connect, useSelector } from 'react-redux';
 
 import './RemoveFilters.css';
 
-import { clearFilters } from '../actions/index';
+import { clearFilters } from '../../actions/index';
 
 const RemoveFilters = props => {
 
     const typeFilter = useSelector(state => state.filters.filterByType);
     const monthFilter = useSelector(state => state.filters.filterByMonth);
     const dateFilter = useSelector(state => state.filters.filterByDate);
-
-    console.log(typeFilter);
 
     const showButton = () => {
         if (typeFilter !== '' || monthFilter !== '' || dateFilter !== '') {

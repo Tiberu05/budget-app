@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 
-import { filterByType } from '../actions/index';
+import { filterByType } from '../../actions/index';
 
 
 const TypeFilter = (props) => {

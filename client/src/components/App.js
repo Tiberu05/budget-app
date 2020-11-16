@@ -1,78 +1,87 @@
-import React, { useState, useEffect } from 'react';
+import React, {  useEffect } from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import history from '../history';
 
 import { connect } from 'react-redux';
 
+// CSS IMPORTS
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'semantic-ui-css/semantic.min.css';
 import 'semantic-ui-react';
 import "jquery/dist/jquery.min.js";
 import './App.css';
 
-
-import HomePage from './HomePage';
+// PAGES IMPORTS
+import HomePage from '../pages/homepage/HomePage';
 import BudgetPage from '../pages/budget-page/BudgetPage';
 import ProfilePage from '../pages/profile-page/ProfilePage';
 
-import Navbar from './Navbar';
-import CreateBudgetLog from './CreateBudgetLog';
-import CreateUser from './CreateUser';
-import EditLog from './EditLog';
+// COMPONENTS IMPORTS
+import Navbar from './navbar/Navbar';
+import CreateLog from './create-log/CreateLog';
+import RegisterForm from './register-form/RegisterForm';
+import EditLog from './edit-log/EditLog';
 import LoginForm from './login-form/LoginForm';
 import Footer from './Footer';
-import FiltersArea from './FiltersArea';
-import FiltersAreaRmk from './FiltersAreaRmk';
 import ChangePassword from './ChangePassword';
 import ResetPassword from './reset-password/ResetPassword';
 
+// ACTIONS IMPORTS
 import { loadUser, getData, setFilters } from '../actions';
 
 const App = props => {
 
+    // PROPS DESTRUCTURING
+    const { email, loadUser, setFilters } = props;
+
+
+    // CHECK IF THE USER IS LOADED BASED ON TOKEN
     useEffect(() => {
 
-        props.loadUser();
+        loadUser();
 
-    }, [])
+    }, [loadUser])
 
+
+    // GETTING THE LAST LOG IN ORDER TO SET MONTHLY FILTER
+    // NOT THE BEST PRACTICE
     useEffect(() => {
 
-        props.setFilters(props.email);
+        setFilters(email);
 
-    }, [props.email])
+    }, [email, setFilters])
 
-    console.log('RERENDERED');
+
 
     return(
-        <Router history={history}>
-            
-                <header>
-                    <Navbar />
-                </header>
-                <div className='container container-main'>
-                    <Switch>
-                        <Route path='/' exact component={HomePage} />
-                        <Route path='/logs' exact component={BudgetPage} />
-                        <Route path='/logs/edit/:id' exact component={EditLog} />
-                        <Route path='/create' exact component={CreateBudgetLog} />
-                        <Route path='/profile' exact component={ProfilePage} />
-                        <Route path='/register' exact component={CreateUser} />
-                        <Route path='/login' exact component={LoginForm} />
-                        <Route path='/changepassword/:token/:email' exact component={ChangePassword} />
-                        <Route path='/resetpassword' exact component={ResetPassword} />
-                        <Route path='/filtersarea' exact component={FiltersArea} />
-                        
-                        <Route path='/rmk' exact component={FiltersAreaRmk} />
-                        
-                    </Switch>
-                </div>
-                <footer>
-                    <Footer />
-                </footer>
+        <Router history={history}> 
+
+            <header>
+                <Navbar />
+            </header>
+
+            <div className='container container-main'>
+                <Switch>
+                    <Route path='/' exact component={HomePage} />
+                    <Route path='/logs' exact component={BudgetPage} />
+                    <Route path='/logs/edit/:id' exact component={EditLog} />
+                    <Route path='/create' exact component={CreateLog} />
+                    <Route path='/profile' exact component={ProfilePage} />
+                    <Route path='/register' exact component={RegisterForm} />
+                    <Route path='/login' exact component={LoginForm} />
+                    <Route path='/changepassword/:token/:email' exact component={ChangePassword} />
+                    <Route path='/resetpassword' exact component={ResetPassword} />                                     
+                </Switch>
+            </div>
+
+            <footer>
+                <Footer />
+            </footer>
+
         </Router>
     );
 };
+
 
 const mapStateToProps = state => {
     return {

@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import CurrencyButtons from '../../components/CurrencyButtons';
+import CurrencyButtons from '../../components/currency-buttons/CurrencyButtons';
 
 const ProfilePage = props => {
 

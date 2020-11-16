@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
-
 import { connect } from 'react-redux';
-import { logOut } from '../actions';
 
-import history from '../history';
+import './Navbar.css';
+
+import { logOut } from '../../actions';
+
+import history from '../../history';
 
 
 const Navbar = props => {
@@ -42,7 +44,7 @@ const Navbar = props => {
 
     const renderNavInfo = () => {
         if (props.isSignedIn) {
-            return <li className="nav-item disabled"><a className="nav-link disabled">Logged in as {props.email}</a></li>
+            return <li className="nav-item disabled nav-link disabled">Logged in as {props.email}</li>
         }
     }
 
